@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 310f7fbc9f5658243a09f3bbe36de761, type: 3}
+  m_Name: 5GrassEntity
+  m_EditorClassIdentifier: 
+  id: 5
+  maxCount: 100
+  sprite: {fileID: -1347532211411968617, guid: 790c49c84f335084b9d1012f0c5a2345, type: 3}
+  placedBlockId: 8

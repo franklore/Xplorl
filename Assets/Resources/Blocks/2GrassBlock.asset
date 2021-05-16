@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09ffb918a9bcdc549aa4188246d9a8cb, type: 3}
+  m_Name: 2GrassBlock
+  m_EditorClassIdentifier: 
+  id: 2
+  layer: 0
+  sprite:
+  - {fileID: -2494252896336691267, guid: c3d7dad3dff50a14da2446202fe358a1, type: 3}
+  - {fileID: -86958243785135829, guid: c3d7dad3dff50a14da2446202fe358a1, type: 3}
+  - {fileID: 559396109674699213, guid: c3d7dad3dff50a14da2446202fe358a1, type: 3}
+  - {fileID: -6275203274320630907, guid: c3d7dad3dff50a14da2446202fe358a1, type: 3}
+  - {fileID: -2588404518190694762, guid: c3d7dad3dff50a14da2446202fe358a1, type: 3}
+  - {fileID: -4060014036471555572, guid: c3d7dad3dff50a14da2446202fe358a1, type: 3}
+  - {fileID: -5452039366220656486, guid: c3d7dad3dff50a14da2446202fe358a1, type: 3}
+  - {fileID: -3797658731372092772, guid: c3d7dad3dff50a14da2446202fe358a1, type: 3}
+  - {fileID: -4392806712527740313, guid: c3d7dad3dff50a14da2446202fe358a1, type: 3}
+  - {fileID: -1595189713966629681, guid: c3d7dad3dff50a14da2446202fe358a1, type: 3}
+  - {fileID: 1412903291977359462, guid: c3d7dad3dff50a14da2446202fe358a1, type: 3}
+  - {fileID: -2032100594376728751, guid: c3d7dad3dff50a14da2446202fe358a1, type: 3}
+  - {fileID: 2796045738719408162, guid: c3d7dad3dff50a14da2446202fe358a1, type: 3}
+  - {fileID: 3375157558910794197, guid: c3d7dad3dff50a14da2446202fe358a1, type: 3}
+  - {fileID: 4695875867639115224, guid: c3d7dad3dff50a14da2446202fe358a1, type: 3}
+  spriteType: 6
+  randomOffset: 0
+  isCollider: 0
+  receiveDamage: 0
+  isEntityBlock: 0
+  maxHealth: 0
+  dropList: []

@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09ffb918a9bcdc549aa4188246d9a8cb, type: 3}
+  m_Name: 9GrassDecoration
+  m_EditorClassIdentifier: 
+  id: 9
+  layer: 1
+  sprite:
+  - {fileID: 6279767424421113796, guid: 270cb85e3b66a5540bb3ba49bc68453e, type: 3}
+  - {fileID: 8604695518964518606, guid: 270cb85e3b66a5540bb3ba49bc68453e, type: 3}
+  - {fileID: -5123055463863974015, guid: 270cb85e3b66a5540bb3ba49bc68453e, type: 3}
+  - {fileID: -8928852565101378165, guid: 270cb85e3b66a5540bb3ba49bc68453e, type: 3}
+  - {fileID: -4906840634607628794, guid: 270cb85e3b66a5540bb3ba49bc68453e, type: 3}
+  - {fileID: -8056587330718577347, guid: 270cb85e3b66a5540bb3ba49bc68453e, type: 3}
+  - {fileID: -5932077032424810324, guid: 270cb85e3b66a5540bb3ba49bc68453e, type: 3}
+  - {fileID: 7410993186269166151, guid: 270cb85e3b66a5540bb3ba49bc68453e, type: 3}
+  - {fileID: -5841008732026011285, guid: 270cb85e3b66a5540bb3ba49bc68453e, type: 3}
+  - {fileID: 4197207773720195769, guid: 270cb85e3b66a5540bb3ba49bc68453e, type: 3}
+  spriteType: 3
+  randomOffset: 0.5
+  isCollider: 0
+  receiveDamage: 0
+  isEntityBlock: 0
+  maxHealth: 0
+  dropList: []
