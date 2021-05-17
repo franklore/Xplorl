@@ -5,10 +5,9 @@ using Xplorl.Grid;
 
 public class MapGenerator : MonoBehaviour
 {
-    public static uint randomSeed;
-
     public static void CreateChunkOnProperty(Vector3Int position, ref Chunk chunk)
     {
+        uint randomSeed = BlockMap.Instance.mapData.randomSeed;
         chunk.Position = position;
         for (int y = 0; y < Chunk.chunkSize; y++)
             for (int x = 0; x < Chunk.chunkSize; x++)
@@ -17,7 +16,7 @@ public class MapGenerator : MonoBehaviour
                 Vector3Int blockLayer0 = new Vector3Int(blockPosition.x, blockPosition.y, 0);
                 Vector3Int blockLayer1 = new Vector3Int(blockPosition.x, blockPosition.y, 1);
                 Block block = chunk[x, y];
-                float v = PerlinNoise(blockLayer0, Chunk.chunkSize * 4, 3, 0.7f);
+                float v = PerlinNoise(blockLayer0, 6, 3, 0.7f);
                 if (position.z == 0)
                 {
                     if (v > 0.5)
@@ -82,36 +81,39 @@ public class MapGenerator : MonoBehaviour
     private static float PerlinNoise(Vector3Int pos, int step, int octaves, float persistence)
     {
         float total = 0;
-        int freq = 1;
         float amplitude = 1;
         float maxValue = 0;
         for (int i = 0; i < octaves; i++)
         {
-            total += PerlinNoise(pos, step / freq) * amplitude;
+            total += PerlinNoise(pos, step - i) * amplitude;
             maxValue += amplitude;
             amplitude *= persistence;
-            freq *= 2;
         }
         return total / maxValue;
     }
 
     private static float PerlinNoise(Vector3Int pos, int step)
     {
+        UnityEngine.Profiling.Profiler.BeginSample("Perlin");
+        uint randomSeed = BlockMap.Instance.mapData.randomSeed;
         Vector3Int chunkPos, blockPos;
         Chunk.SplitPosition(pos, out chunkPos, out blockPos, step);
         Vector2 g00 = RandomGenerator.RandomVec2(chunkPos, randomSeed);
         Vector2 g01 = RandomGenerator.RandomVec2(chunkPos + new Vector3Int(0, 1, 0), randomSeed);
         Vector2 g11 = RandomGenerator.RandomVec2(chunkPos + new Vector3Int(1, 1, 0), randomSeed);
         Vector2 g10 = RandomGenerator.RandomVec2(chunkPos + new Vector3Int(1, 0, 0), randomSeed);
-        Vector2 d = new Vector2((blockPos.x + 0.5f) / step, (blockPos.y + 0.5f) / step);
+        Vector2 d = new Vector2((blockPos.x + 0.5f) / (1 << step), (blockPos.y + 0.5f) / (1 << step));
         Vector2 p00 = d;
         Vector2 p01 = d - new Vector2(0, 1);
         Vector2 p11 = d - new Vector2(1, 1);
         Vector2 p10 = d - new Vector2(1, 0);
-        return (Interp(
+        float v = (Interp(
             Interp(Vector2.Dot(p00, g00), Vector2.Dot(p01, g01), d.y),
             Interp(Vector2.Dot(p10, g10), Vector2.Dot(p11, g11), d.y),
             d.x) + 1) / 2;
+        UnityEngine.Profiling.Profiler.EndSample();
+
+        return v;
     }
 
     private static float Interp(float a, float b, float t)

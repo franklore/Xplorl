@@ -172,7 +172,13 @@ public class LRUCache<K, T>
         return fetch;
     }
 
-    public void Submit(K k)
+    public void DiscardFetch()
+    {
+        pool.Enqueue(fetch);
+        fetch = default(T);
+    }
+
+    public void SubmitFetch(K k)
     {
         Add(k, fetch);
         fetch = default(T);

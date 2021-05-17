@@ -25,8 +25,18 @@ public class WeaponController : MonoBehaviour
         transform.rotation = Quaternion.Euler(0, 0, angle);
     }
 
-    public virtual void Fire()
+    //public virtual void Fire()
+    //{
+    //    Instantiate(bullet, Muzzle.position, transform.rotation);
+    //}
+
+    public virtual void FireDown()
     {
         Instantiate(bullet, Muzzle.position, transform.rotation);
+    }
+
+    public virtual void FireUp()
+    {
+
     }
 }

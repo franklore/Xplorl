@@ -7,23 +7,14 @@ public class SceneData : MonoBehaviour
     private static SceneData instance;
 
     public static SceneData Instance { get => instance; }
-    public string MapName { get => mapName; set => mapName = value; }
-    public bool NewMap { get => newMap; set => newMap = value; }
-    public int RandmonSeed { get => randmonSeed; set => randmonSeed = value; }
 
-    [SerializeField]
-    private string mapName;
+    public bool isNewMap;
 
-    [SerializeField]
-    private bool newMap;
+    public string mapName;
 
-    [SerializeField]
-    private int randmonSeed;
+    public MapData mapData;
 
-    public void SetMapName(string mapName)
-    {
-        MapName = mapName;
-    }
+    public GameSettings settings;
 
     private void Start()
     {
@@ -36,5 +27,6 @@ public class SceneData : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        settings.mapRootDirectory = Application.persistentDataPath + "/maps/";
     }
 }

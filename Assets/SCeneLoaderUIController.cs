@@ -39,18 +39,19 @@ public class SCeneLoaderUIController : MonoBehaviour
         {
            Destroy(MapList.GetChild(i).gameObject);
         }
-        DirectoryInfo di = new DirectoryInfo(Application.streamingAssetsPath + "/map/");
+        DirectoryInfo di = new DirectoryInfo(SceneData.Instance.settings.mapRootDirectory);
         DirectoryInfo[] dis = di.GetDirectories();
         for (int i = 0; i < dis.Length; i++)
         {
             string mapName = dis[i].Name;
             GameObject go = Instantiate(MapListItem, MapList);
             RectTransform rt = go.GetComponent<RectTransform>();
-            rt.anchoredPosition = new Vector2(0, i * rt.rect.height);
+            rt.anchoredPosition = new Vector2(0, -i * rt.rect.height);
             MapListItem mli = go.GetComponent<MapListItem>();
             mli.MapName = mapName;
-            mli.UIController = this;
+            mli.SceneLoader = loader;
         }
+        MapList.sizeDelta = new Vector2(0, dis.Length * 50);
     }
 
     public void MainWindowQuit()
@@ -64,13 +65,6 @@ public class SCeneLoaderUIController : MonoBehaviour
         NewWindow.gameObject.SetActive(true);
     }
 
-    public void LoadWindowLoad()
-    {
-        SceneData.Instance.MapName = selectedMap;
-        SceneData.Instance.NewMap = false;
-        loader.StartGame();
-    }
-
     public void LoadWindowBack()
     {
         LoadWindow.gameObject.SetActive(false);
@@ -79,15 +73,15 @@ public class SCeneLoaderUIController : MonoBehaviour
 
     public void NewWindowConfirm()
     {
-        SceneData.Instance.MapName = mapName.text;
-        SceneData.Instance.NewMap = true;
+        SceneData.Instance.mapName = mapName.text;
+        SceneData.Instance.isNewMap = true;
         if (randomSeed.text == "")
         {
-            SceneData.Instance.RandmonSeed = 0;
+            SceneData.Instance.mapData.randomSeed = 0;
         }
         else
         {
-            SceneData.Instance.RandmonSeed = int.Parse(randomSeed.text);
+            SceneData.Instance.mapData.randomSeed = uint.Parse(randomSeed.text);
         }
         loader.StartGame();
     }

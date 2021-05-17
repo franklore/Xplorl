@@ -15,4 +15,4 @@ MonoBehaviour:
   id: 4
   maxCount: 100
   sprite: {fileID: 21300000, guid: 3aa1cb26afcdc244bb3a95c193575ecb, type: 3}
-  placedBlockId: 7
+  placedBlockId: 0

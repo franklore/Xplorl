@@ -8,11 +8,7 @@ public class MapFileManager
 {
     private Dictionary<Vector3Int, int> indices = new Dictionary<Vector3Int, int>();
 
-    private readonly string mapRootDir;
-
     private readonly string mapFilePath;
-
-    private readonly string infoFilePath;
 
     private BinaryReader mapReader;
 
@@ -24,13 +20,9 @@ public class MapFileManager
 
     private Chunk emptyChunk;
 
-    public MapFileManager(string mapName)
+    public MapFileManager(string mapPath)
     {
-        mapRootDir = Application.streamingAssetsPath + "/map/" + mapName;
-
-        mapFilePath = Path.Combine(mapRootDir, "chunk.map");
-
-        infoFilePath = Path.Combine(mapRootDir, "info.map");
+        mapFilePath = mapPath;
 
         emptyChunk = new Chunk(Vector3Int.zero);
 
@@ -39,9 +31,7 @@ public class MapFileManager
 
     public void CreateMap()
     {
-        if (!Directory.Exists(mapRootDir)) {
-            Directory.CreateDirectory(mapRootDir);
-        }
+        Debug.Log("Create map at " + mapFilePath);
         try
         {
             using (BinaryWriter writer = new BinaryWriter(new FileStream(mapFilePath, FileMode.Create)))

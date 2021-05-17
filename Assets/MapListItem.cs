@@ -7,15 +7,15 @@ public class MapListItem : MonoBehaviour
 {
     private string mapName;
 
-    private SCeneLoaderUIController ui;
+    private SceneLoader loader;
 
-    public SCeneLoaderUIController UIController
+    public SceneLoader SceneLoader
     {
-        get => ui; set
-        {       
-            ui = value;
+        get => loader; set
+        {
+            loader = value;
             Button button = GetComponent<Button>();
-            button.onClick.AddListener(SetMapName);
+            button.onClick.AddListener(LoadGame);
         }
     }
 
@@ -29,8 +29,10 @@ public class MapListItem : MonoBehaviour
         }
     }
 
-    private void SetMapName()
+    public void LoadGame()
     {
-        ui.SelectedMap = mapName;
+        SceneData.Instance.mapName = mapName;
+        SceneData.Instance.isNewMap = false;
+        loader.StartGame();
     }
 }

@@ -45,12 +45,9 @@ public class XCharacterController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //rigidbody.AddForce(new Vector2(x, y) * MoveSpeed * Time.deltaTime, ForceMode2D.Impulse);
-        Vector3 mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
         if (Input.GetMouseButtonDown(0))
         {
-            weapon.Fire();
+            weapon.FireDown();
         }
 
         if (Input.GetKeyDown(KeyCode.Q))
@@ -61,34 +58,38 @@ public class XCharacterController : MonoBehaviour
             pack.AddItem(7, 100);
         }
 
-        //Camera.main.orthographicSize -= Input.mouseScrollDelta.y * Time.deltaTime * 10;
-
         if (Input.GetMouseButtonDown(1))
         {
-            if (!pack[pack.SelectedItemIndex].IsEmpty())
-            {
-                ItemObject io = ItemObjectFactory.Instance.GetItemObject(pack[pack.SelectedItemIndex].id);
-                BlockObject bo = BlockFactory.Instance.GetBlockObject(io.placedBlockId);
-                if (bo != null)
-                {
-                    Vector3Int pos = new Vector3Int(
-                        Mathf.FloorToInt(mouseWorldPosition.x),
-                        Mathf.FloorToInt(mouseWorldPosition.y),
-                        bo.layer);
-                    if (map.GetBlock(pos) == null || map.GetBlock(pos).IsEmpty() || bo.layer == 0)
-                    {
-                        if (pack.ConsumeItem(pack[pack.SelectedItemIndex].id, 1))
-                        {
-                            Block block = map.GetBlock(pos);
-                            bo.CreateBlock(0, ref block);
-                        }
-                    }
-                }
-
-            }
+            PlaceBlock();
         }
 
         SelectPackSlot();
+    }
+
+    private void PlaceBlock()
+    {
+        Vector3 mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        if (!pack[pack.SelectedItemIndex].IsEmpty())
+        {
+            ItemObject io = ItemObjectFactory.Instance.GetItemObject(pack[pack.SelectedItemIndex].id);
+            BlockObject bo = BlockFactory.Instance.GetBlockObject(io.placedBlockId);
+            if (io.placedBlockId != 0 && bo != null)
+            {
+                Vector3Int pos = new Vector3Int(
+                    Mathf.FloorToInt(mouseWorldPosition.x),
+                    Mathf.FloorToInt(mouseWorldPosition.y),
+                    bo.layer);
+                if (map.GetBlock(pos) == null || map.GetBlock(pos).IsEmpty() || bo.layer == 0)
+                {
+                    if (pack.ConsumeItem(pack[pack.SelectedItemIndex].id, 1))
+                    {
+                        Block block = map.GetBlock(pos);
+                        bo.CreateBlock(0, ref block);
+                    }
+                }
+            }
+
+        }
     }
 
     private void SelectPackSlot()

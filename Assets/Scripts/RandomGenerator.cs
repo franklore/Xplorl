@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class RandomGenerator
 {
+
+
     public static Vector2 RandomVec2(Vector3Int v, uint seed)
     {
         float theta = RandomValue(v, seed);

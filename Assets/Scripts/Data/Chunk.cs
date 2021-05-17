@@ -6,7 +6,9 @@ using Xplorl.Grid;
 
 public class Chunk
 {
-    public static int chunkSize = 16;
+    private static int chunkSizelog2 = 4;
+
+    public static int chunkSize = 1 << chunkSizelog2;
 
     public static int ClassSize { get => chunkSize * chunkSize * Block.ClassSize; }
 
@@ -129,33 +131,33 @@ public class Chunk
 
     public static void SplitPosition(Vector3Int position, out Vector3Int chunkPosition, out Vector3Int blockPosition)
     {
-        SplitPosition(position, out chunkPosition, out blockPosition, chunkSize);
+        SplitPosition(position, out chunkPosition, out blockPosition, chunkSizelog2);
     }
 
-    public static void SplitPosition(Vector3Int position, out Vector3Int chunkPosition, out Vector3Int blockPosition, int chunkSize)
+    public static void SplitPosition(Vector3Int position, out Vector3Int chunkPosition, out Vector3Int blockPosition, int log2)
     {
-        chunkPosition = new Vector3Int(0, 0, position.z);
-        blockPosition = new Vector3Int(0, 0, position.z);
-        if (position.x % chunkSize >= 0)
-        {
-            blockPosition.x = position.x % chunkSize;
-            chunkPosition.x = position.x / chunkSize;
-        }
-        else
-        {
-            blockPosition.x = position.x % chunkSize + chunkSize;
-            chunkPosition.x = position.x / chunkSize - 1;
-        }
-        if (position.y % chunkSize >= 0)
-        {
-            blockPosition.y = position.y % chunkSize;
-            chunkPosition.y = position.y / chunkSize;
-        }
-        else
-        {
-            blockPosition.y = position.y % chunkSize + chunkSize;
-            chunkPosition.y = position.y / chunkSize - 1;
-        }
+        chunkPosition = new Vector3Int(position.x >> log2, position.y >> log2, position.z);
+        blockPosition = new Vector3Int(position.x - (chunkPosition.x << log2), position.y - (chunkPosition.y << log2), 0);
+        //if (position.x % c >= 0)
+        //{
+        //    blockPosition.x = position.x % c;
+        //    chunkPosition.x = position.x / c;
+        //}
+        //else
+        //{
+        //    blockPosition.x = position.x % c + c;
+        //    chunkPosition.x = position.x / c - 1;
+        //}
+        //if (position.y % c >= 0)
+        //{
+        //    blockPosition.y = position.y % c;
+        //    chunkPosition.y = position.y / c;
+        //}
+        //else
+        //{
+        //    blockPosition.y = position.y % c + c;
+        //    chunkPosition.y = position.y / c - 1;
+        //}
     }
 
     public static Vector3Int CombinePosition(Vector3Int chunkPosition, int x, int y)

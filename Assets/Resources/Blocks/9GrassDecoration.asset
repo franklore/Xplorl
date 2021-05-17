@@ -27,7 +27,7 @@ MonoBehaviour:
   - {fileID: 4197207773720195769, guid: 270cb85e3b66a5540bb3ba49bc68453e, type: 3}
   spriteType: 3
   randomOffset: 0.5
-  isCollider: 1
+  isCollider: 0
   receiveDamage: 1
   isEntityBlock: 0
   maxHealth: 0

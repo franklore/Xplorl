@@ -35,7 +35,7 @@ public class BlockBehaviour : MonoBehaviour
 
     private DamageReceiver dr = null;
 
-    private SpriteRenderer renderer;
+    private SpriteRenderer sr;
 
     private void Awake()
     {
@@ -43,50 +43,30 @@ public class BlockBehaviour : MonoBehaviour
         co.offset = new Vector2(0, 0);
         co.size = new Vector2(1, 1);
         dr = gameObject.AddComponent<DamageReceiver>();
-        renderer = GetComponentInChildren<SpriteRenderer>();
+        sr = GetComponentInChildren<SpriteRenderer>();
     }
 
     public void UpdateComponents(Block block)
     {
         BlockObject bo = BlockFactory.Instance.GetBlockObject(block);
         BlockObject.SpriteData spriteData = bo.GetSpriteData(Position);
-        renderer.sprite = spriteData.sprite;
-        renderer.transform.position = new Vector3(Position.x, Position.y, 0) 
+        sr.sprite = spriteData.sprite;
+        sr.transform.position = new Vector3(Position.x, Position.y, 0) 
             + new Vector3(0.5f, 0.5f, 0)
-            + bo.randomOffset * (Vector3)RandomGenerator.RandomVec2(Position, 2);
-        renderer.transform.rotation = Quaternion.Euler(0, 0, -90 * spriteData.rotation);
+            + bo.randomOffset * (Vector3)RandomGenerator.RandomVec2(Position, BlockMap.Instance.mapData.randomSeed + 2);
+        sr.transform.rotation = Quaternion.Euler(0, 0, -90 * spriteData.rotation);
         if (bo.isEntityBlock)
         {
-            renderer.sortingOrder = 0;
-            renderer.sortingLayerName = "Entity";
-        }      
+            sr.sortingOrder = 0;
+            sr.sortingLayerName = "Entity";
+        }
         else
         {
-            renderer.sortingOrder = renderedChunk.ChunkPos.z;
-            renderer.sortingLayerName = "Terrain";
+            sr.sortingOrder = renderedChunk.ChunkPos.z;
+            sr.sortingLayerName = "Terrain";
         }
-
         co.enabled = bo.isCollider;
         dr.enabled = bo.receiveDamage;
-        //if (bo.isCollider && co == null)
-        //{
-        //    co = gameObject.AddComponent<BoxCollider2D>();
-        //    co.offset = new Vector2(0, 0);
-        //    co.size = new Vector2(1, 1);
-        //}
-        //if (!bo.isCollider && co != null)
-        //{
-        //    Destroy(co);
-        //}
-
-        //if (bo.receiveDamage && dr == null)
-        //{
-        //    dr = gameObject.AddComponent<DamageReceiver>();
-        //}
-        //if (!bo.receiveDamage && dr != null)
-        //{
-        //    Destroy(dr);
-        //}
     }
 
     public void Clear()

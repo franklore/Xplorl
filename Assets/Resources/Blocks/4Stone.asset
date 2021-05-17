@@ -20,18 +20,11 @@ MonoBehaviour:
   - {fileID: -2685253163611956912, guid: 0e0f5b1771d381a44973a91e128393c3, type: 3}
   - {fileID: -2657622170025962153, guid: 0e0f5b1771d381a44973a91e128393c3, type: 3}
   spriteType: 3
+  randomOffset: 0
   isCollider: 1
   receiveDamage: 1
   isEntityBlock: 1
   maxHealth: 300
   dropList:
-  - id: 0
-    count: 1
-  - id: 0
-    count: 1
-  - id: 0
-    count: 1
-  - id: 0
-    count: 1
   - id: 0
     count: 1

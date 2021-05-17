@@ -135,16 +135,7 @@ public class BlockObject : ScriptableObject
     private SpriteData GetRandomSpriteData(Vector3Int pos)
     {
         SpriteData spriteData = new SpriteData();
-        long hash = pos.x;
-        hash = (hash + 0xabcd1234) + (hash << 15);
-        hash = (hash + 0x0987efab) ^ (hash >> 11);
-        hash ^= pos.y;
-        hash = (hash + 0x46ac12fd) + (hash << 7);
-        hash = (hash + 0xbe9730af) ^ (hash << 11);
-        var oldState = Random.state;
-        Random.InitState((int)hash);
-        spriteData.sprite = sprite[Random.Range(0, sprite.Length)];
-        Random.state = oldState;
+        spriteData.sprite = sprite[(int)(RandomGenerator.RandomValue(pos, 1) * sprite.Length)];
         return spriteData;
     } 
 

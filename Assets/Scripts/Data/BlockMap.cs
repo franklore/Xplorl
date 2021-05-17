@@ -1,22 +1,25 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Tilemaps;
-using Xplorl.Grid;
+using System.IO;
 
 public class BlockMap : MonoBehaviour
 {
+    public MapData mapData { get; private set; }
+
     private LRUCache<Vector3Int, RenderedChunk> chunkCache;
 
     private Queue<Vector3Int> loadQueue;
 
     private GridMap gridMap;
 
-    private int chunkCapacity = 32;
+    private int chunkCapacity = 100;
 
     public int spriteSize = 16;
 
     private bool mapLoaded = false;
+
+    private string mapDir;
 
     private Vector3Int observerChunkPosition = new Vector3Int(0, 0, 0);
 
@@ -69,7 +72,6 @@ public class BlockMap : MonoBehaviour
     private void Start()
     {
         loadQueue = new Queue<Vector3Int>();
-
         gridMap = new GridMap();
         gridMap.RegisterCreateOnMissChunkMethod(CreateOnMissChunk);
         gridMap.RegisterOnSetValueMethod(OnGridmapSetValue);
@@ -103,7 +105,7 @@ public class BlockMap : MonoBehaviour
         chunkCache = new LRUCache<Vector3Int, RenderedChunk>(chunkCapacity, true, renderedChunks);
         chunkCache.registerOnRemoveMethod(OnReleaseChunk);
 
-        Load(SceneData.Instance.NewMap);
+        Load(SceneData.Instance.isNewMap);
     }
 
     private void Update()
@@ -157,8 +159,31 @@ public class BlockMap : MonoBehaviour
 
     public void Load(bool newMap)
     {
+        mapDir = Path.Combine(SceneData.Instance.settings.mapRootDirectory, SceneData.Instance.mapName);
+        if (newMap)
+        {
+            if (!Directory.Exists(mapDir))
+            {
+                Directory.CreateDirectory(mapDir);
+            }
+            mapData = SceneData.Instance.mapData;
+            string mapDataJson = JsonUtility.ToJson(mapData);
+            using (StreamWriter writer = new StreamWriter(new FileStream(mapDir + "/map.json", FileMode.Create, FileAccess.Write)))
+            {
+                writer.Write(mapDataJson);
+            }
+        }
+        else
+        {
+            using (StreamReader reader = new StreamReader(new FileStream(mapDir + "/map.json", FileMode.Open, FileAccess.Read)))
+            {
+                string mapDataJson = reader.ReadToEnd();
+                mapData = JsonUtility.FromJson<MapData>(mapDataJson);
+            }
+        }
+
         mapLoaded = true;
-        gridMap.Load(SceneData.Instance.MapName, newMap);
+        gridMap.Load(mapDir + "/blocks.dat", newMap);
         DrawVisibleChunk(observerChunkPosition);
         DrawMinimap(observerChunkPosition);
     }
@@ -168,6 +193,12 @@ public class BlockMap : MonoBehaviour
         mapLoaded = false;
         gridMap.Save();
         chunkCache.Clear();
+
+        string mapDataJson = JsonUtility.ToJson(mapData);
+        using (StreamWriter writer = new StreamWriter(new FileStream(mapDir + "/map.json", FileMode.Create, FileAccess.Write)))
+        {
+            writer.Write(mapDataJson);
+        }
     }
 
     private void CreateOnMissChunk(Vector3Int chunkPos, ref Chunk chunk)
@@ -185,7 +216,7 @@ public class BlockMap : MonoBehaviour
             rendered = chunkCache.Fetch();
             rendered.ChunkPos = chunkPosition;
             rendered.gameObject.SetActive(true);
-            chunkCache.Submit(chunkPosition);
+            chunkCache.SubmitFetch(chunkPosition);
         }
         rendered.DrawAndUpdateNeighbor(BlockPosition, gridMap[pos]);
     }
@@ -208,7 +239,7 @@ public class BlockMap : MonoBehaviour
             rendered = chunkCache.Fetch();
             rendered.ChunkPos = chunkPos;
             rendered.gameObject.SetActive(true);
-            chunkCache.Submit(chunkPos);
+            chunkCache.SubmitFetch(chunkPos);
         }
         for (int y = 0; y < Chunk.chunkSize; y++) 
             for (int x = 0; x < Chunk.chunkSize; x++)
@@ -233,9 +264,9 @@ public class BlockMap : MonoBehaviour
 
     private void DrawVisibleChunk(Vector3Int observerPosition)
     {
-        for (int col = -1; col <= 1; col++)
+        for (int col = -2; col <= 2; col++)
         {
-            for (int row = -1; row <= 1; row++)
+            for (int row = -2; row <= 2; row++)
             {
                 for (int layer = layerBottom; layer <= layerTop; layer++)
                 {
