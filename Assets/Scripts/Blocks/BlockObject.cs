@@ -189,7 +189,7 @@ public class BlockObject : ScriptableObject
         {
             data.sprite = sprite[index];
             data.rotation = mask == 255 ? 
-                (int)(RandomGenerator.RandomValue(pos, 2621,24321,241199,1234876432) * 4) : 
+                (int)(RandomGenerator.RandomValue(pos, 0) * 4) : 
                 GetTerrainRotation((byte)mask);
         }
         return data;

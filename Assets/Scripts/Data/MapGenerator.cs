@@ -5,6 +5,8 @@ using Xplorl.Grid;
 
 public class MapGenerator : MonoBehaviour
 {
+    public static uint randomSeed;
+
     public static void CreateChunkOnProperty(Vector3Int position, ref Chunk chunk)
     {
         chunk.Position = position;
@@ -31,7 +33,7 @@ public class MapGenerator : MonoBehaviour
                 {
                     if (v > 0.55)
                     {
-                        if (RandomGenerator.RandomValue(blockLayer1, 797, 3961, 78113, 1104928579) < 0.05)
+                        if (RandomGenerator.RandomValue(blockLayer1, randomSeed + 1) < 0.05)
                         {
                             BlockFactory.Instance.GetBlockObject(7).CreateBlock(0, ref block);
                             continue;
@@ -39,7 +41,7 @@ public class MapGenerator : MonoBehaviour
                     }
                     if (v > 0.5)
                     {
-                        if (RandomGenerator.RandomValue(blockLayer1, 1256, 13256, 61763, 192848192) < Mathf.Clamp(v - 0.3f, 0, 0.8f))
+                        if (RandomGenerator.RandomValue(blockLayer1, randomSeed + 2) < Mathf.Clamp(v - 0.3f, 0, 0.8f))
                         {
                             BlockFactory.Instance.GetBlockObject(8).CreateBlock(0, ref block);
                             continue;
@@ -47,7 +49,7 @@ public class MapGenerator : MonoBehaviour
                     }
                     if (v > 0.5)
                     {
-                        float r = RandomGenerator.RandomValue(blockLayer1, 917, 4930, 48481, 192948192);
+                        float r = RandomGenerator.RandomValue(blockLayer1, randomSeed + 3);
                         if (r < 0.05)
                         {
                             BlockFactory.Instance.GetBlockObject(9).CreateBlock(0, ref block);
@@ -97,10 +99,10 @@ public class MapGenerator : MonoBehaviour
     {
         Vector3Int chunkPos, blockPos;
         Chunk.SplitPosition(pos, out chunkPos, out blockPos, step);
-        Vector2 g00 = RandomGenerator.RandomVec2(chunkPos);
-        Vector2 g01 = RandomGenerator.RandomVec2(chunkPos + new Vector3Int(0, 1, 0));
-        Vector2 g11 = RandomGenerator.RandomVec2(chunkPos + new Vector3Int(1, 1, 0));
-        Vector2 g10 = RandomGenerator.RandomVec2(chunkPos + new Vector3Int(1, 0, 0));
+        Vector2 g00 = RandomGenerator.RandomVec2(chunkPos, randomSeed);
+        Vector2 g01 = RandomGenerator.RandomVec2(chunkPos + new Vector3Int(0, 1, 0), randomSeed);
+        Vector2 g11 = RandomGenerator.RandomVec2(chunkPos + new Vector3Int(1, 1, 0), randomSeed);
+        Vector2 g10 = RandomGenerator.RandomVec2(chunkPos + new Vector3Int(1, 0, 0), randomSeed);
         Vector2 d = new Vector2((blockPos.x + 0.5f) / step, (blockPos.y + 0.5f) / step);
         Vector2 p00 = d;
         Vector2 p01 = d - new Vector2(0, 1);

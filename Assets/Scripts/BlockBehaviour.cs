@@ -53,7 +53,7 @@ public class BlockBehaviour : MonoBehaviour
         renderer.sprite = spriteData.sprite;
         renderer.transform.position = new Vector3(Position.x, Position.y, 0) 
             + new Vector3(0.5f, 0.5f, 0)
-            + bo.randomOffset * (Vector3)RandomGenerator.RandomVec2(Position);
+            + bo.randomOffset * (Vector3)RandomGenerator.RandomVec2(Position, 2);
         renderer.transform.rotation = Quaternion.Euler(0, 0, -90 * spriteData.rotation);
         if (bo.isEntityBlock)
         {

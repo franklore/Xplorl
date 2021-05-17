@@ -8,13 +8,13 @@ public class MapFileManager
 {
     private Dictionary<Vector3Int, int> indices = new Dictionary<Vector3Int, int>();
 
-    private readonly string mapName;
-
     private readonly string mapRootDir;
 
     private readonly string mapFilePath;
 
     private readonly string indexFilePath;
+
+    private readonly string infoFilePath;
 
     private BinaryReader mapReader;
 
@@ -26,13 +26,13 @@ public class MapFileManager
 
     public MapFileManager(string mapName)
     {
-        this.mapName = mapName;
-
         mapRootDir = Application.streamingAssetsPath + "/map/" + mapName;
 
-        mapFilePath = Path.Combine(mapRootDir, "map.dat");
+        mapFilePath = Path.Combine(mapRootDir, "chunk.map");
 
-        indexFilePath = Path.Combine(mapRootDir, "map_idx.dat");
+        indexFilePath = Path.Combine(mapRootDir, "idx.map");
+
+        infoFilePath = Path.Combine(mapRootDir, "info.map");
 
         emptyChunk = new Chunk(Vector3Int.zero);
 
@@ -73,17 +73,6 @@ public class MapFileManager
 
             using (BinaryReader reader = new BinaryReader(new FileStream(indexFilePath, FileMode.Open)))
             {
-                //indices.Clear();
-                //indicesCounter = 0;
-                //int chunkPos = 0;
-                //while (reader.BaseStream.Position < reader.BaseStream.Length)
-                //{
-                //    int x = reader.ReadInt32();
-                //    int y = reader.ReadInt32();
-                //    int z = reader.ReadInt32();
-                //    indices.Add(new Vector3Int(x, y, z), chunkPos++);
-                //    indicesCounter++;
-                //}
                 int maxIndex = 0;
                 while (reader.BaseStream.Position < reader.BaseStream.Length)
                 {

@@ -102,6 +102,8 @@ public class BlockMap : MonoBehaviour
 
         chunkCache = new LRUCache<Vector3Int, RenderedChunk>(chunkCapacity, true, renderedChunks);
         chunkCache.registerOnRemoveMethod(OnReleaseChunk);
+
+        Load(SceneData.Instance.NewMap);
     }
 
     private void Update()
@@ -156,7 +158,7 @@ public class BlockMap : MonoBehaviour
     public void Load(bool newMap)
     {
         mapLoaded = true;
-        gridMap.Load("map", newMap);
+        gridMap.Load(SceneData.Instance.MapName, newMap);
         DrawVisibleChunk(observerChunkPosition);
         DrawMinimap(observerChunkPosition);
     }
