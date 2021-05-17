@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 15
-  lifetime: 1
+  lifetime: 2
   owner: {fileID: 0}
   effect: {fileID: 9129043312633769094, guid: d7c81212764c6ad489c484f9ddee30da, type: 3}
 --- !u!212 &3674749279297492559

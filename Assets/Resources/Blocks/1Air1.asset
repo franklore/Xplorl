@@ -10,12 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 09ffb918a9bcdc549aa4188246d9a8cb, type: 3}
-  m_Name: 1PropertyBlock
+  m_Name: 1Air1
   m_EditorClassIdentifier: 
   id: 1
+  layer: 0
   sprite:
-  - {fileID: 21300000, guid: 7a08809660c368c4b83fd8f1deaa7de1, type: 3}
-  spriteType: 1
+  - {fileID: 21300000, guid: 70fcbc27bcf155a4386e27bc8a89601f, type: 3}
+  spriteType: 0
+  randomOffset: 0
   isCollider: 0
   receiveDamage: 0
+  isEntityBlock: 0
   maxHealth: 0
+  dropList: []

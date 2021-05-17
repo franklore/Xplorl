@@ -67,6 +67,7 @@ public class SCeneLoaderUIController : MonoBehaviour
     public void LoadWindowLoad()
     {
         SceneData.Instance.MapName = selectedMap;
+        SceneData.Instance.NewMap = false;
         loader.StartGame();
     }
 
@@ -80,13 +81,20 @@ public class SCeneLoaderUIController : MonoBehaviour
     {
         SceneData.Instance.MapName = mapName.text;
         SceneData.Instance.NewMap = true;
-        SceneData.Instance.RandmonSeed = int.Parse(randomSeed.text) ;
+        if (randomSeed.text == "")
+        {
+            SceneData.Instance.RandmonSeed = 0;
+        }
+        else
+        {
+            SceneData.Instance.RandmonSeed = int.Parse(randomSeed.text);
+        }
         loader.StartGame();
     }
 
     public void NewWindowBack()
     {
-        LoadWindow.gameObject.SetActive(false);
-        NewWindow.gameObject.SetActive(true);
+        NewWindow.gameObject.SetActive(false);
+        LoadWindow.gameObject.SetActive(true);
     }
 }
