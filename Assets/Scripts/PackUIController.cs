@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class PackUIController : MonoBehaviour
 {
-    public GameObject player;
+    private GameObject player;
 
     public GameObject[] slots;
 
@@ -13,10 +13,25 @@ public class PackUIController : MonoBehaviour
 
     private Pack pack;
 
+    public static PackUIController Instance;
+
+    public GameObject Player
+    {
+        get => player; set
+        {
+            player = value;
+            pack = player.GetComponent<Pack>();
+            pack.registerUpdateEvent(UpdatePackUI);
+        }
+    }
+
+    private void Awake()
+    {
+        Instance = this;
+    }
+
     private void Start()
     {
-        pack = player.GetComponent<Pack>();
-        pack.registerUpdateEvent(UpdatePackUI);
         UpdatePackUI();
     }
 

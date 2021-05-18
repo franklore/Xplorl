@@ -1,10 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
 
 public class XCharacterController : MonoBehaviour
 {
     public float MoveSpeed;
+
+    private float health;
 
     private Vector3 faceDirection;
 
@@ -19,7 +22,7 @@ public class XCharacterController : MonoBehaviour
     public BlockMap map;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         anim = GetComponentInChildren<Animator>();
         rb = GetComponent<Rigidbody2D>();
@@ -136,8 +139,60 @@ public class XCharacterController : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    public struct PlayerInfo
     {
+        public float health;
 
+        public Item[] items;
+
+        public static PlayerInfo DefaultInfo
+        {
+            get
+            {
+                PlayerInfo info = new PlayerInfo();
+                info.health = 100;
+                info.items = new Item[10];
+                return info;
+            }
+        }
+    }
+
+    public void Load()
+    {
+        PlayerInfo playerInfo;
+        string playerFile = Path.Combine(BlockMap.Instance.MapDir, "player.json");
+        if (File.Exists(playerFile))
+        {
+            using (StreamReader reader = new StreamReader(new FileStream(playerFile, FileMode.Open, FileAccess.Read)))
+            {
+                string playerInfoJson = reader.ReadToEnd();
+                playerInfo = JsonUtility.FromJson<PlayerInfo>(playerInfoJson);
+            }
+        }
+        else
+        {
+            playerInfo = PlayerInfo.DefaultInfo;
+        }
+
+        health = playerInfo.health;
+        pack.InitPack(playerInfo.items);
+    }
+
+    public void Save()
+    {
+        PlayerInfo playerInfo;
+        playerInfo.health = health;
+        playerInfo.items = new Item[pack.packCapacity];
+        for (int i = 0; i < pack.packCapacity; i++)
+        {
+            playerInfo.items[i] = pack[i];
+        }
+        string playerFile = Path.Combine(BlockMap.Instance.MapDir, "player.json");
+        using (StreamWriter writer = new StreamWriter(new FileStream(playerFile, FileMode.OpenOrCreate, FileAccess.Write)))
+        {
+            string playerInfoJson = JsonUtility.ToJson(playerInfo);
+            writer.Write(playerInfoJson);
+            Debug.Log("Save player info at " + playerFile);
+        }
     }
 }

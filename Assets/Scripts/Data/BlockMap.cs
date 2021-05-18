@@ -13,21 +13,25 @@ public class BlockMap : MonoBehaviour
 
     private GridMap gridMap;
 
-    private int chunkCapacity = 100;
+    public GameObject playerPrefab;
 
-    public int spriteSize = 16;
+    private static int maxPlayer = 1;
+
+    public GameObject player { get; private set; }
+
+    private static int chunkCapacity = 100;
+
+    public static int spriteSize = 16;
 
     private bool mapLoaded = false;
 
-    private string mapDir;
+    public string MapDir { get; private set; }
 
     private Vector3Int observerChunkPosition = new Vector3Int(0, 0, 0);
 
     public static int layerTop = 1;
 
     public static int layerBottom = 0;
-
-    public static int propertyLayer = layerTop + 1;
 
     public UnityEngine.UI.Image minimap;
 
@@ -41,10 +45,6 @@ public class BlockMap : MonoBehaviour
     {
         get
         {
-            if (instance == null)
-            {
-                instance = GameObject.FindWithTag("PropertyMap").GetComponent<BlockMap>();
-            }
             return instance;
         }
     }
@@ -63,10 +63,15 @@ public class BlockMap : MonoBehaviour
             while (!drawSuccess && loadQueue.Count > 0)
             {
                 Vector3Int vec = loadQueue.Dequeue();
-                drawSuccess = DrawChunk(vec);         
+                drawSuccess = DrawChunk(vec);
             }
             yield return null;
         }
+    }
+
+    private void Awake()
+    {
+        instance = this;
     }
 
     private void Start()
@@ -110,7 +115,7 @@ public class BlockMap : MonoBehaviour
 
     private void Update()
     {
-        Vector3 observer = Camera.main.transform.position;
+        Vector3 observer = player.transform.position;
         Vector3Int chunkPosition, blockPosition;
         Chunk.SplitPosition(Vector3Int.FloorToInt(observer), out chunkPosition, out blockPosition);
         setObserverPosition(chunkPosition);
@@ -159,23 +164,23 @@ public class BlockMap : MonoBehaviour
 
     public void Load(bool newMap)
     {
-        mapDir = Path.Combine(SceneData.Instance.settings.mapRootDirectory, SceneData.Instance.mapName);
+        MapDir = Path.Combine(SceneData.Instance.settings.mapRootDirectory, SceneData.Instance.mapName);
         if (newMap)
         {
-            if (!Directory.Exists(mapDir))
+            if (!Directory.Exists(MapDir))
             {
-                Directory.CreateDirectory(mapDir);
+                Directory.CreateDirectory(MapDir);
             }
             mapData = SceneData.Instance.mapData;
             string mapDataJson = JsonUtility.ToJson(mapData);
-            using (StreamWriter writer = new StreamWriter(new FileStream(mapDir + "/map.json", FileMode.Create, FileAccess.Write)))
+            using (StreamWriter writer = new StreamWriter(new FileStream(MapDir + "/map.json", FileMode.Create, FileAccess.Write)))
             {
                 writer.Write(mapDataJson);
             }
         }
         else
         {
-            using (StreamReader reader = new StreamReader(new FileStream(mapDir + "/map.json", FileMode.Open, FileAccess.Read)))
+            using (StreamReader reader = new StreamReader(new FileStream(MapDir + "/map.json", FileMode.Open, FileAccess.Read)))
             {
                 string mapDataJson = reader.ReadToEnd();
                 mapData = JsonUtility.FromJson<MapData>(mapDataJson);
@@ -183,9 +188,19 @@ public class BlockMap : MonoBehaviour
         }
 
         mapLoaded = true;
-        gridMap.Load(mapDir + "/blocks.dat", newMap);
+        gridMap.Load(MapDir + "/blocks.dat", newMap);
+        InitPlayer();
         DrawVisibleChunk(observerChunkPosition);
         DrawMinimap(observerChunkPosition);
+    }
+
+    private void InitPlayer()
+    {
+        player = Instantiate(playerPrefab);
+        PackUIController.Instance.Player = player;
+        XCharacterController xcc = player.GetComponent<XCharacterController>();
+        xcc.map = this;
+        xcc.Load();
     }
 
     public void Save()
@@ -193,9 +208,10 @@ public class BlockMap : MonoBehaviour
         mapLoaded = false;
         gridMap.Save();
         chunkCache.Clear();
+        player.GetComponent<XCharacterController>().Save();
 
         string mapDataJson = JsonUtility.ToJson(mapData);
-        using (StreamWriter writer = new StreamWriter(new FileStream(mapDir + "/map.json", FileMode.Create, FileAccess.Write)))
+        using (StreamWriter writer = new StreamWriter(new FileStream(MapDir + "/map.json", FileMode.Create, FileAccess.Write)))
         {
             writer.Write(mapDataJson);
         }
@@ -241,7 +257,7 @@ public class BlockMap : MonoBehaviour
             rendered.gameObject.SetActive(true);
             chunkCache.SubmitFetch(chunkPos);
         }
-        for (int y = 0; y < Chunk.chunkSize; y++) 
+        for (int y = 0; y < Chunk.chunkSize; y++)
             for (int x = 0; x < Chunk.chunkSize; x++)
             {
                 rendered.DrawAndUpdateNeighborAcrossBlock(x, y, chunk[x, y]);
@@ -264,11 +280,9 @@ public class BlockMap : MonoBehaviour
 
     private void DrawVisibleChunk(Vector3Int observerPosition)
     {
-        for (int col = -2; col <= 2; col++)
-        {
-            for (int row = -2; row <= 2; row++)
-            {
-                for (int layer = layerBottom; layer <= layerTop; layer++)
+        for (int layer = layerBottom; layer <= layerTop; layer++)
+            for (int col = -2; col <= 2; col++)
+                for (int row = -2; row <= 2; row++)
                 {
                     Vector3Int c = new Vector3Int(row + observerPosition.x, col + observerPosition.y, layer);
                     if (!chunkCache.ContainsKey(c))
@@ -280,8 +294,6 @@ public class BlockMap : MonoBehaviour
                         chunkCache.Refresh(c);
                     }
                 }
-            }
-        }
     }
 
     public void DrawMinimap(Vector3Int chunkPos)

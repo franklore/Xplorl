@@ -16,7 +16,7 @@ public class MapGenerator : MonoBehaviour
                 Vector3Int blockLayer0 = new Vector3Int(blockPosition.x, blockPosition.y, 0);
                 Vector3Int blockLayer1 = new Vector3Int(blockPosition.x, blockPosition.y, 1);
                 Block block = chunk[x, y];
-                float v = PerlinNoise(blockLayer0, 6, 3, 0.7f);
+                float v = PerlinNoise(blockLayer0, 6, 3, 0.7f) + (1 / (blockPosition.magnitude + 1));
                 if (position.z == 0)
                 {
                     if (v > 0.5)

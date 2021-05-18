@@ -14,7 +14,7 @@ public class RandomGenerator
 
     public static float RandomValue(Vector3Int vec, uint seed)
     {
-         return RandomValue((uint)vec.x + seed, (uint)vec.y, (uint)vec.z, 821, 6163, 686423, 602821991);
+         return RandomValue((uint)vec.x, (uint)vec.y, (uint)vec.z + seed, 821, 6163, 686423, 602821991);
     }
 
     public static float RandomValue(uint x, uint y, uint z, uint p0, uint p1, uint p2, uint p3)

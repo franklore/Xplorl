@@ -23,6 +23,11 @@ public class Pack : MonoBehaviour
     public Item this[int index] 
     {
         get => items[index];
+        set 
+        { 
+            items[index] = value;
+            updatePack.Invoke();
+        }
     }
 
     public int SelectedItemIndex {
@@ -37,7 +42,7 @@ public class Pack : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        items = new Item[packCapacity];
+
     }
 
     // Update is called once per frame
@@ -111,5 +116,22 @@ public class Pack : MonoBehaviour
         }
         updatePack.Invoke();
         return true;
+    }
+
+    public void Clear()
+    {
+        items = new Item[packCapacity];
+        updatePack.Invoke();
+    }
+
+    public void InitPack(Item[] items)
+    {
+        this.items = new Item[items.Length];
+        for (int i = 0; i < items.Length; i++)
+        {
+            this.items[i] = items[i];
+        }
+        this.packCapacity = this.items.Length;
+        updatePack.Invoke();
     }
 }
