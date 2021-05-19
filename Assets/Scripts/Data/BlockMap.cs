@@ -52,7 +52,7 @@ public class BlockMap : MonoBehaviour
     private void OnReleaseChunk(Vector3Int pos, RenderedChunk renderedChunk)
     {
         renderedChunk.Clear();
-        Debug.Log("Release " + pos + ", " + renderedChunk);
+        //Debug.Log("Release " + pos + ", " + renderedChunk);
     }
 
     private IEnumerator ChunkLoaderCoroutine()
@@ -308,6 +308,9 @@ public class BlockMap : MonoBehaviour
                     for (int yy = 0; yy < Chunk.chunkSize; yy++)
                         for (int xx = 0; xx < Chunk.chunkSize; xx++)
                         {
+                            if (chunk[xx, yy].Id >= 6) {
+                                Debug.Log(Chunk.CombinePosition(chunk.Position, xx, yy));
+                            }
                             minimap.sprite.texture.SetPixel(
                                 (chunkViewDistance + x) * Chunk.chunkSize + xx,
                                 (chunkViewDistance + y) * Chunk.chunkSize + yy,

@@ -102,6 +102,7 @@ public class MapFileManager
                 mapReader.BaseStream.Seek(i * Chunk.ClassSize, SeekOrigin.Begin);
                 byte[] bytes = mapReader.ReadBytes(Chunk.ClassSize);
                 indices[indicesReverse[i]] = nextIndex;
+                Debug.Log("move " + i + " to " + nextIndex);
                 WriteBytesNew(bytes);
             }
             else
@@ -109,9 +110,10 @@ public class MapFileManager
                 mapReader.BaseStream.Seek(i * Chunk.ClassSize, SeekOrigin.Begin);
                 int next = mapReader.ReadInt32();
                 int prev = mapReader.ReadInt32();
+                Debug.Log("move " + i + " to " + nextIndex);
                 if (next * Chunk.ClassSize < mapReader.BaseStream.Length)
                 {
-                    mapWriter.BaseStream.Seek(next * Chunk.ClassSize, SeekOrigin.Begin);
+                    mapWriter.BaseStream.Seek(next * Chunk.ClassSize + 4, SeekOrigin.Begin);
                     mapWriter.Write(prev);
                 }
                 if (nextIndex != i)
@@ -123,7 +125,9 @@ public class MapFileManager
                 {
                     nextIndex = next;
                 }
+
             }
+            
         }
         
         // write indices
@@ -191,7 +195,12 @@ public class MapFileManager
         {
             if (!indices.TryGetValue(chunk.Position, out loc))
             {
+                Debug.Log("Empty chunk" + chunk.Position + " indexed");
                 indices.Add(chunk.Position, -1);
+            }
+            else if (loc < 0)
+            {
+                // do nothing
             }
             else
             {
@@ -204,6 +213,7 @@ public class MapFileManager
                 mapWriter.Write(nextIndex);
                 nextIndex = loc;
                 indices[chunk.Position] = -1;
+                Debug.Log("Set Empty" + chunk.Position + " at " + loc);
             }
             return;
         }
@@ -213,6 +223,7 @@ public class MapFileManager
             // write chunk which doesn't exist in the file
             loc = nextIndex;
             indices.Add(chunk.Position, loc);
+            Debug.Log("Write new chunk" + chunk.Position + " at " + nextIndex);
             WriteBytesNew(chunk.ToByteArray());
         }
         else if (loc < 0)
@@ -220,12 +231,14 @@ public class MapFileManager
             // write chunk which used to be empty
             loc = nextIndex;
             indices[chunk.Position] = loc;
+            Debug.Log("Write chunk" + chunk.Position + " at " + nextIndex);
             WriteBytesNew(chunk.ToByteArray());
         }
         else
         {
             // overwrite
             mapReader.BaseStream.Seek(loc * Chunk.ClassSize, SeekOrigin.Begin);
+            Debug.Log("overWrite chunk:" + chunk.Position + " at " + loc);
             mapWriter.Write(chunk.ToByteArray());
         }
         chunk.Changed = false;

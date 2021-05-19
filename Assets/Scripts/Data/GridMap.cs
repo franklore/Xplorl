@@ -143,7 +143,9 @@ public class GridMap
         }
         else if (res == 1)
         {
-            chunkCache.DiscardFetch();
+            MapGenerator.CreateEmptyChunk(position, ref chunk);
+            chunkCache.SubmitFetch(position);
+            chunk.Loaded = true;
             return;
         }
         else

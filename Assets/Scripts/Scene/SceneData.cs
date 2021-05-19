@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
 
 public class SceneData : MonoBehaviour
 {
@@ -27,6 +28,10 @@ public class SceneData : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        settings.mapRootDirectory = Application.persistentDataPath + "/maps/";
+        settings.mapRootDirectory = "maps/";
+        if (!Directory.Exists(settings.mapRootDirectory))
+        {
+            Directory.CreateDirectory(settings.mapRootDirectory);
+        }
     }
 }
