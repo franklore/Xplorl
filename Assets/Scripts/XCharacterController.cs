@@ -188,7 +188,7 @@ public class XCharacterController : MonoBehaviour
             playerInfo.items[i] = pack[i];
         }
         string playerFile = Path.Combine(BlockMap.Instance.MapDir, "player.json");
-        using (StreamWriter writer = new StreamWriter(new FileStream(playerFile, FileMode.OpenOrCreate, FileAccess.Write)))
+        using (StreamWriter writer = new StreamWriter(new FileStream(playerFile, FileMode.Create, FileAccess.Write)))
         {
             string playerInfoJson = JsonUtility.ToJson(playerInfo);
             writer.Write(playerInfoJson);

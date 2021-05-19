@@ -22,9 +22,37 @@ public class SCeneLoaderUIController : MonoBehaviour
 
     public SceneLoader loader;
 
+    private string loadMapName;
+
+    public string LoadMapName
+    {
+        get
+        {
+            return loadMapName;
+        }
+        set
+        {
+            loadMapName = value;
+            textLoadMapName.text = loadMapName;
+            MapDetailWindow.gameObject.SetActive(value != "");
+        }
+    }
+
+    public RectTransform MapDetailWindow;
+
+    public Text textLoadMapName;
+
     private string selectedMap;
 
     public string SelectedMap { get => selectedMap; set => selectedMap = value; }
+
+    private void Start()
+    {
+        MainWindow.gameObject.SetActive(true);
+        NewWindow.gameObject.SetActive(false);
+        LoadWindow.gameObject.SetActive(false);
+        MapDetailWindow.gameObject.SetActive(false);
+    }
 
     public void MainWindowStart()
     {
@@ -49,7 +77,7 @@ public class SCeneLoaderUIController : MonoBehaviour
             rt.anchoredPosition = new Vector2(0, -i * rt.rect.height);
             MapListItem mli = go.GetComponent<MapListItem>();
             mli.MapName = mapName;
-            mli.SceneLoader = loader;
+            mli.SceneLoaderUIController = this;
         }
         MapList.sizeDelta = new Vector2(0, dis.Length * 50);
     }
@@ -69,6 +97,21 @@ public class SCeneLoaderUIController : MonoBehaviour
     {
         LoadWindow.gameObject.SetActive(false);
         MainWindow.gameObject.SetActive(true);
+    }
+
+    public void LoadWindowLoad()
+    {
+        SceneData.Instance.mapName = loadMapName;
+        SceneData.Instance.isNewMap = false;
+        loader.StartGame();
+    }
+
+    public void LoadWindowDelete()
+    {
+        string path = Path.Combine(SceneData.Instance.settings.mapRootDirectory, loadMapName);
+        Directory.Delete(path, true);
+        LoadMapName = "";
+        LoadMapList();
     }
 
     public void NewWindowConfirm()

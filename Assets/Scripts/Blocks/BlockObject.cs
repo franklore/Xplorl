@@ -135,7 +135,7 @@ public class BlockObject : ScriptableObject
     private SpriteData GetRandomSpriteData(Vector3Int pos)
     {
         SpriteData spriteData = new SpriteData();
-        spriteData.sprite = sprite[(int)(RandomGenerator.RandomValue(pos, 1) * sprite.Length)];
+        spriteData.sprite = sprite[(int)(RandomGenerator.RandomValue(pos, 999) * sprite.Length)];
         return spriteData;
     } 
 
