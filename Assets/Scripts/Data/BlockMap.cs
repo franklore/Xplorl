@@ -190,7 +190,7 @@ public class BlockMap : MonoBehaviour
         mapLoaded = true;
         gridMap.Load(MapDir + "/blocks.dat", newMap);
         InitPlayer();
-        DrawVisibleChunk(observerChunkPosition);
+        DrawVisibleChunk(observerChunkPosition, false);
         DrawMinimap(observerChunkPosition);
     }
 
@@ -272,13 +272,13 @@ public class BlockMap : MonoBehaviour
         {
             return;
         }
-        DrawVisibleChunk(newObserverChunkPosition);
+        DrawVisibleChunk(newObserverChunkPosition, true);
         DrawMinimap(newObserverChunkPosition);
 
         observerChunkPosition = newObserverChunkPosition;
     }
 
-    private void DrawVisibleChunk(Vector3Int observerPosition)
+    private void DrawVisibleChunk(Vector3Int observerPosition, bool drawLater)
     {
         for (int layer = layerBottom; layer <= layerTop; layer++)
             for (int col = -2; col <= 2; col++)
@@ -287,7 +287,14 @@ public class BlockMap : MonoBehaviour
                     Vector3Int c = new Vector3Int(row + observerPosition.x, col + observerPosition.y, layer);
                     if (!chunkCache.ContainsKey(c))
                     {
-                        DrawChunkLater(c);
+                        if (drawLater)
+                        {
+                            DrawChunkLater(c);
+                        }
+                        else
+                        {
+                            DrawChunk(c);
+                        }
                     }
                     else
                     {

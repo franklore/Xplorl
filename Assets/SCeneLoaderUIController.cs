@@ -79,7 +79,7 @@ public class SCeneLoaderUIController : MonoBehaviour
             mli.MapName = mapName;
             mli.SceneLoaderUIController = this;
         }
-        MapList.sizeDelta = new Vector2(0, dis.Length * 50);
+        MapList.sizeDelta = new Vector2(0, dis.Length * 100);
     }
 
     public void MainWindowQuit()
@@ -118,14 +118,7 @@ public class SCeneLoaderUIController : MonoBehaviour
     {
         SceneData.Instance.mapName = mapName.text;
         SceneData.Instance.isNewMap = true;
-        if (randomSeed.text == "")
-        {
-            SceneData.Instance.mapData.randomSeed = 0;
-        }
-        else
-        {
-            SceneData.Instance.mapData.randomSeed = uint.Parse(randomSeed.text);
-        }
+        SceneData.Instance.mapData.randomSeed = RandomGenerator.StringToSeed(randomSeed.text);
         loader.StartGame();
     }
 

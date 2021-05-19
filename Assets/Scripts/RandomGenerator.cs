@@ -14,7 +14,7 @@ public class RandomGenerator
 
     public static float RandomValue(Vector3Int vec, uint seed)
     {
-         return RandomValue((uint)vec.x, (uint)vec.y, (uint)vec.z + seed, 821, 6163, 686423, 602821991);
+        return RandomValue((uint)vec.x, (uint)vec.y, (uint)vec.z + seed, 821, 6163, 686423, 602821991);
     }
 
     public static float RandomValue(uint x, uint y, uint z, uint p0, uint p1, uint p2, uint p3)
@@ -22,5 +22,22 @@ public class RandomGenerator
         uint n = x + p0 * y + p1 * z;
         n = (n << 13) ^ n;
         return (n * (n * p2) + p3) / 4394967296.0f;
+    }
+
+    public static uint StringToSeed(string str)
+    {
+        uint seed;
+        if (uint.TryParse(str, out seed))
+        {
+            return seed;
+        }
+        else
+        {
+            for (int i = 0; i < str.Length; i++)
+            {
+                seed = (seed << 4) ^ (uint)str[i];
+            }
+            return seed;
+        }
     }
 }
