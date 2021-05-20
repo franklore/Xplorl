@@ -11,6 +11,11 @@ public class Pack : MonoBehaviour
 
     private int selectedItemIndex;
 
+    public Item SelectedItem
+    {
+        get => this[selectedItemIndex];  
+    }
+
     public delegate void OnUpdatePack();
 
     private event OnUpdatePack updatePack;
@@ -81,7 +86,7 @@ public class Pack : MonoBehaviour
         return count;
     }
 
-    public bool ConsumeItem(int id, int count)
+    public bool ContainsItem(int id, int count)
     {
         int total = 0;
         for (int i = 0; i < packCapacity; i++)
@@ -89,14 +94,23 @@ public class Pack : MonoBehaviour
             if (items[i].id == id)
             {
                 total += items[i].count;
+                if (total >= count)
+                {
+                    return true;
+                }
             }
         }
-        if (total < count)
+        return false;
+
+    }
+
+    public bool ConsumeItem(int id, int count)
+    {
+        if (!ContainsItem(id, count))
         {
             return false;
         }
-
-        total = count;
+        int total = count;
         for (int i = 0; i < packCapacity; i++)
         {
             if (items[i].id == id)
@@ -116,6 +130,17 @@ public class Pack : MonoBehaviour
         }
         updatePack.Invoke();
         return true;
+    }
+
+    public bool ConsumeItemAtIndex(int index, int count)
+    {
+        if (items[index].count >= count)
+        {
+            items[index].count -= count;
+            updatePack.Invoke();
+            return true;
+        }
+        return false;
     }
 
     public void Clear()

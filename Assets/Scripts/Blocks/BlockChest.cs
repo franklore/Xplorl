@@ -5,5 +5,5 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Chest", menuName = "Block/Chest")]
 class BlockChest : BlockObject
 {
-    public int a;
+
 }

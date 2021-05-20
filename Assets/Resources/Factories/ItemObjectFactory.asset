@@ -9,13 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 09ffb918a9bcdc549aa4188246d9a8cb, type: 3}
-  m_Name: 6StoneWall
+  m_Script: {fileID: 11500000, guid: 487d6af06959f314f90af5239f1e0d7b, type: 3}
+  m_Name: ItemObjectFactory
   m_EditorClassIdentifier: 
-  id: 6
-  sprite: []
-  spriteType: 0
-  isCollider: 0
-  receiveDamage: 0
-  maxHealth: 0
-  layer: 0
+  DroppedItemTemplate: {fileID: 1577071126508097498, guid: 06c1d4bc58bb10143893da905da619f2,
+    type: 3}

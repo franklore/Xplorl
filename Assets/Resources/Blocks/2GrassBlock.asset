@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 2
   layer: 0
+  tags:
+  - solid block
   sprite:
   - {fileID: -2494252896336691267, guid: c3d7dad3dff50a14da2446202fe358a1, type: 3}
   - {fileID: -86958243785135829, guid: c3d7dad3dff50a14da2446202fe358a1, type: 3}
@@ -37,3 +39,5 @@ MonoBehaviour:
   isEntityBlock: 0
   maxHealth: 0
   dropList: []
+  canPlaceOnBlocksWithTag: []
+  cannotPlaceOnBlocksWithTag: []

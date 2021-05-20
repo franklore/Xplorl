@@ -5,40 +5,38 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "ItemObjectFactory", menuName = "Items/ItemObjectFactory")]
 public class ItemObjectFactory : ScriptableObject
 {
-    [SerializeField]
-    private ItemObject[] itemObjects;
-
     private ItemObject[] indexedItemObjects;
 
     private static ItemObjectFactory instance;
+
+    public static ItemObjectFactory Instance
+    {
+        get
+        {
+            return instance;
+        }
+    }
 
     public GameObject DroppedItemTemplate;
 
     private void OnEnable()
     {
-        indexedItemObjects = new ItemObject[itemObjects.Length];
+        object[] objects = Resources.LoadAll("Items");
 
-        foreach (ItemObject io in itemObjects)
+        indexedItemObjects = new ItemObject[objects.Length];
+
+        foreach (ItemObject io in objects)
         {
             Debug.Log("load item id:" + io.id);
             indexedItemObjects[io.id] = io;
         }
+        instance = this;
     }
+
 
     public ItemObject GetItemObject(int id)
     {
         return indexedItemObjects[id];
-    }
-
-    public static ItemObjectFactory Instance { 
-        get
-        {
-            if (instance == null)
-            {
-                instance = Resources.Load("Items/ItemObjectFactory") as ItemObjectFactory;
-            }
-            return instance;
-        }
     }
 
     public GameObject CreateDroppedItem(Item item, Vector3 position)

@@ -81,17 +81,12 @@ public class XCharacterController : MonoBehaviour
                 Vector3Int pos = new Vector3Int(
                     Mathf.FloorToInt(mouseWorldPosition.x),
                     Mathf.FloorToInt(mouseWorldPosition.y),
-                    bo.layer);
-                if (map.GetBlock(pos) == null || map.GetBlock(pos).IsEmpty() || bo.layer == 0)
+                    0);
+                if (pack.SelectedItem.count > 0 && bo.SetBlock(pos))
                 {
-                    if (pack.ConsumeItem(pack[pack.SelectedItemIndex].id, 1))
-                    {
-                        Block block = map.GetBlock(pos);
-                        bo.CreateBlock(0, ref block);
-                    }
+                    pack.ConsumeItemAtIndex(pack.SelectedItemIndex, 1);
                 }
             }
-
         }
     }
 
@@ -143,6 +138,8 @@ public class XCharacterController : MonoBehaviour
     {
         public float health;
 
+        public Vector3 position;
+
         public Item[] items;
 
         public static PlayerInfo DefaultInfo
@@ -175,6 +172,7 @@ public class XCharacterController : MonoBehaviour
         }
 
         health = playerInfo.health;
+        transform.position = playerInfo.position;
         pack.InitPack(playerInfo.items);
     }
 
@@ -182,6 +180,7 @@ public class XCharacterController : MonoBehaviour
     {
         PlayerInfo playerInfo;
         playerInfo.health = health;
+        playerInfo.position = transform.position;
         playerInfo.items = new Item[pack.packCapacity];
         for (int i = 0; i < pack.packCapacity; i++)
         {

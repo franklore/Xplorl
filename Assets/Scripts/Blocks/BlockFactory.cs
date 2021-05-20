@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class BlockFactory
+[CreateAssetMenu(fileName = "BlockFactory", menuName = "Blocks/BlockFactory")]
+public class BlockFactory : ScriptableObject
 {
     public int spriteSize = 16;
 
     private BlockObject[] indexedBlockObjects;
 
-    private static BlockFactory instance = new BlockFactory();
+    private static BlockFactory instance;
 
     public static BlockFactory Instance
     {
@@ -19,7 +20,7 @@ public class BlockFactory
         }
     }
 
-    private BlockFactory()
+    private void OnEnable()
     {
         object[] objects = Resources.LoadAll("Blocks");
 
@@ -30,6 +31,7 @@ public class BlockFactory
             Debug.Log("load block id:" + bo.id);
             indexedBlockObjects[bo.id] = bo;
         }
+        instance = this;
     }
 
     public BlockObject GetBlockObject(Block block)

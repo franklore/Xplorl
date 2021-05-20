@@ -11,6 +11,10 @@ public class BlockObject : ScriptableObject
 
     public int layer;
 
+    public string[] tags;
+
+    private HashSet<string> tagHash;
+
     public Sprite[] sprite;
 
     public enum SpriteType
@@ -32,6 +36,8 @@ public class BlockObject : ScriptableObject
             "Four"
             )]
         Pipe,
+
+        FourDirPipe,
 
         [Tooltip("Filled\n" +
             "Three Sides\n" +
@@ -65,11 +71,80 @@ public class BlockObject : ScriptableObject
 
     public Item[] dropList;
 
+    public string[] canPlaceOnBlocksWithTag;
+
+    public string[] cannotPlaceOnBlocksWithTag;
+
+    public string[] canReplaceBlockWithTag;
+
+    public string[] cannotReplaceBlockWithTag;
+
+
     public virtual void CreateBlock(int state, ref Block block)
     {
         block.Id = id;
         block.State = state;
         block.Health = maxHealth;
+    }
+
+    public virtual bool SetBlock(Vector3Int pos)
+    {
+        Vector3Int groundPos = new Vector3Int(pos.x, pos.y, 0);
+        Vector3Int blockPos = new Vector3Int(pos.x, pos.y, layer);
+        Block groundBlock = BlockMap.Instance.GetBlock(groundPos);
+        BlockObject groundBo = BlockFactory.Instance.GetBlockObject(groundBlock);
+        Block posBlock = BlockMap.Instance.GetBlock(blockPos);
+        BlockObject posBo = BlockFactory.Instance.GetBlockObject(posBlock);
+
+        bool groundCheck = false;
+        for (int i = 0; i < canPlaceOnBlocksWithTag.Length; i++)
+        {
+            if (groundBo.ContainsTag(canPlaceOnBlocksWithTag[i]))
+            {
+                groundCheck = true;
+                break;
+            }
+        }
+        for (int i = 0; i < cannotPlaceOnBlocksWithTag.Length; i++)
+        {
+            if (groundBo.ContainsTag(cannotPlaceOnBlocksWithTag[i]))
+            {
+                groundCheck = false;
+                break;
+            }
+        }
+
+        bool replaceCheck = posBlock.IsEmpty();
+        if (!posBlock.IsEmpty() && posBlock.Id != id)
+        {
+            for (int i = 0; i < canReplaceBlockWithTag.Length; i++)
+            {
+                if (posBo.ContainsTag(canReplaceBlockWithTag[i]))
+                {
+                    replaceCheck = true;
+                    break;
+                }
+            }
+            for (int i = 0; i < cannotReplaceBlockWithTag.Length; i++)
+            {
+                if (posBo.ContainsTag(cannotReplaceBlockWithTag[i]))
+                {
+                    replaceCheck = false;
+                    break;
+                }
+            }
+        }
+
+        if (groundBlock != null && groundCheck && replaceCheck)
+        {
+            Block block = BlockMap.Instance.GetBlock(blockPos);
+            CreateBlock(0, ref block);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     public virtual void InteractBlock(Vector3Int position) 
@@ -94,6 +169,21 @@ public class BlockObject : ScriptableObject
         }
     }
 
+    private void OnEnable()
+    {
+        tagHash = new HashSet<string>();
+        for (int i = 0; i < tags.Length; i++)
+        {
+            string tag = tags[i].ToLower();
+            tagHash.Add(tag);
+        }
+    }
+
+    public bool ContainsTag(string i)
+    {
+        return tagHash.Contains(i);
+    }
+
     public SpriteData GetSpriteData(Vector3Int pos)
     {
         SpriteData data = new SpriteData();
@@ -109,6 +199,10 @@ public class BlockObject : ScriptableObject
         else if (spriteType == SpriteType.Random)
         {
             return GetRandomSpriteData(pos);
+        }
+        else if (spriteType == SpriteType.FourDirPipe)
+        {
+            return Get4DirPipeSpriteData(pos);
         }
         else if (spriteType == SpriteType.Pipe)
         {
@@ -139,7 +233,6 @@ public class BlockObject : ScriptableObject
         return spriteData;
     } 
 
-
     private SpriteData GetPipeSpriteData(Vector3Int pos)
     {
         SpriteData data = new SpriteData();
@@ -156,7 +249,26 @@ public class BlockObject : ScriptableObject
             data.rotation = GetPipeRotation((byte)mask);
         }
         return data;
-    } 
+    }
+
+    private SpriteData Get4DirPipeSpriteData(Vector3Int pos)
+    {
+        SpriteData data = new SpriteData();
+
+        int mask = SameId(pos + new Vector3Int(0, 1, 0)) ? 1 : 0;
+        mask += SameId(pos + new Vector3Int(1, 0, 0)) ? 2 : 0;
+        mask += SameId(pos + new Vector3Int(0, -1, 0)) ? 4 : 0;
+        mask += SameId(pos + new Vector3Int(-1, 0, 0)) ? 8 : 0;
+
+        int index = Get4DirPipeIndex((byte)mask);
+        if (index >= 0 && index < sprite.Length && SameId(pos))
+        {
+            data.sprite = sprite[index];
+            data.rotation = 0;
+        }
+        return data;
+    }
+
     private SpriteData GetTerrainSpriteData(Vector3Int pos)
     {
         SpriteData data = new SpriteData();
@@ -337,5 +449,10 @@ public class BlockObject : ScriptableObject
                 return 3;
         }
         return 0;
+    }
+
+    private int Get4DirPipeIndex(byte mask)
+    {
+        return mask;
     }
 }

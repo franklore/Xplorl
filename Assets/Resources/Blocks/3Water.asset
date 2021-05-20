@@ -13,6 +13,9 @@ MonoBehaviour:
   m_Name: 3Water
   m_EditorClassIdentifier: 
   id: 3
+  layer: 0
+  tags:
+  - water
   sprite:
   - {fileID: 6049605792901559095, guid: 5c171b042fe6793498ff5871bf9326d6, type: 3}
   - {fileID: -5882170695943828418, guid: 5c171b042fe6793498ff5871bf9326d6, type: 3}
@@ -30,8 +33,13 @@ MonoBehaviour:
   - {fileID: -8438048412923043348, guid: 5c171b042fe6793498ff5871bf9326d6, type: 3}
   - {fileID: 3162826104367349501, guid: 5c171b042fe6793498ff5871bf9326d6, type: 3}
   spriteType: 6
+  randomOffset: 0
   isCollider: 1
   receiveDamage: 0
-  maxHealth: 0
-  layer: 0
   isEntityBlock: 0
+  maxHealth: 0
+  dropList: []
+  canPlaceOnBlocksWithTag: []
+  cannotPlaceOnBlocksWithTag: []
+  canReplaceBlockWithTag: []
+  cannotReplaceBlockWithTag: []

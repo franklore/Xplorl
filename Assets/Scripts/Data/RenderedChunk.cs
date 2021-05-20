@@ -82,69 +82,71 @@ public class RenderedChunk : MonoBehaviour
     public void DrawAndUpdateNeighborAcrossBlock(int x, int y, Block block)
     {
         Draw(x, y, block);
+        int z = chunkPos.z;
+        Vector3Int blockPos = Chunk.CombinePosition(chunkPos, new Vector3Int(x, y, z));
         if (x == 0)
         {
             if (y == 0)
             {
-                RedrawIfId(block.Id, chunkPos * Chunk.chunkSize + new Vector3Int(x, y, 0) + new Vector3Int(-1, -1, 0));
-                RedrawIfId(block.Id, chunkPos * Chunk.chunkSize + new Vector3Int(x, y, 0) + new Vector3Int(-1, 0, 0));
-                RedrawIfId(block.Id, chunkPos * Chunk.chunkSize + new Vector3Int(x, y, 0) + new Vector3Int(-1, 1, 0));
-                RedrawIfId(block.Id, chunkPos * Chunk.chunkSize + new Vector3Int(x, y, 0) + new Vector3Int(0, -1, 0));
-                RedrawIfId(block.Id, chunkPos * Chunk.chunkSize + new Vector3Int(x, y, 0) + new Vector3Int(1, -1, 0));
+                RedrawIfId(block.Id, blockPos + new Vector3Int(-1, -1, 0));
+                RedrawIfId(block.Id, blockPos + new Vector3Int(-1, 0, 0));
+                RedrawIfId(block.Id, blockPos + new Vector3Int(-1, 1, 0));
+                RedrawIfId(block.Id, blockPos + new Vector3Int(0, -1, 0));
+                RedrawIfId(block.Id, blockPos + new Vector3Int(1, -1, 0));
             }
             else if (y == Chunk.chunkSize - 1)
             {
-                RedrawIfId(block.Id, chunkPos * Chunk.chunkSize + new Vector3Int(x, y, 0) + new Vector3Int(-1, -1, 0));
-                RedrawIfId(block.Id, chunkPos * Chunk.chunkSize + new Vector3Int(x, y, 0) + new Vector3Int(-1, 0, 0));
-                RedrawIfId(block.Id, chunkPos * Chunk.chunkSize + new Vector3Int(x, y, 0) + new Vector3Int(-1, 1, 0));
-                RedrawIfId(block.Id, chunkPos * Chunk.chunkSize + new Vector3Int(x, y, 0) + new Vector3Int(0, 1, 0));
-                RedrawIfId(block.Id, chunkPos * Chunk.chunkSize + new Vector3Int(x, y, 0) + new Vector3Int(1, 1, 0));
+                RedrawIfId(block.Id, blockPos + new Vector3Int(-1, -1, 0));
+                RedrawIfId(block.Id, blockPos + new Vector3Int(-1, 0, 0));
+                RedrawIfId(block.Id, blockPos + new Vector3Int(-1, 1, 0));
+                RedrawIfId(block.Id, blockPos + new Vector3Int(0, 1, 0));
+                RedrawIfId(block.Id, blockPos + new Vector3Int(1, 1, 0));
             }
             else
             {
-                RedrawIfId(block.Id, chunkPos * Chunk.chunkSize + new Vector3Int(x, y, 0) + new Vector3Int(-1, -1, 0));
-                RedrawIfId(block.Id, chunkPos * Chunk.chunkSize + new Vector3Int(x, y, 0) + new Vector3Int(-1, 0, 0));
-                RedrawIfId(block.Id, chunkPos * Chunk.chunkSize + new Vector3Int(x, y, 0) + new Vector3Int(-1, 1, 0));
+                RedrawIfId(block.Id, blockPos + new Vector3Int(-1, -1, 0));
+                RedrawIfId(block.Id, blockPos + new Vector3Int(-1, 0, 0));
+                RedrawIfId(block.Id, blockPos + new Vector3Int(-1, 1, 0));
             }
         }
         else if (x == Chunk.chunkSize - 1)
         {
             if (y == 0)
             {
-                RedrawIfId(block.Id, chunkPos * Chunk.chunkSize + new Vector3Int(x, y, 0) + new Vector3Int(1, -1, 0));
-                RedrawIfId(block.Id, chunkPos * Chunk.chunkSize + new Vector3Int(x, y, 0) + new Vector3Int(1, 0, 0));
-                RedrawIfId(block.Id, chunkPos * Chunk.chunkSize + new Vector3Int(x, y, 0) + new Vector3Int(1, 1, 0));
-                RedrawIfId(block.Id, chunkPos * Chunk.chunkSize + new Vector3Int(x, y, 0) + new Vector3Int(-1, -1, 0));
-                RedrawIfId(block.Id, chunkPos * Chunk.chunkSize + new Vector3Int(x, y, 0) + new Vector3Int(0, -1, 0));
+                RedrawIfId(block.Id, blockPos + new Vector3Int(1, -1, 0));
+                RedrawIfId(block.Id, blockPos + new Vector3Int(1, 0, 0));
+                RedrawIfId(block.Id, blockPos + new Vector3Int(1, 1, 0));
+                RedrawIfId(block.Id, blockPos + new Vector3Int(-1, -1, 0));
+                RedrawIfId(block.Id, blockPos + new Vector3Int(0, -1, 0));
             }
             else if (y == Chunk.chunkSize - 1)
             {
-                RedrawIfId(block.Id, chunkPos * Chunk.chunkSize + new Vector3Int(x, y, 0) + new Vector3Int(1, -1, 0));
-                RedrawIfId(block.Id, chunkPos * Chunk.chunkSize + new Vector3Int(x, y, 0) + new Vector3Int(1, 0, 0));
-                RedrawIfId(block.Id, chunkPos * Chunk.chunkSize + new Vector3Int(x, y, 0) + new Vector3Int(1, 1, 0));
-                RedrawIfId(block.Id, chunkPos * Chunk.chunkSize + new Vector3Int(x, y, 0) + new Vector3Int(-1, 1, 0));
-                RedrawIfId(block.Id, chunkPos * Chunk.chunkSize + new Vector3Int(x, y, 0) + new Vector3Int(0, 1, 0));
+                RedrawIfId(block.Id, blockPos + new Vector3Int(1, -1, 0));
+                RedrawIfId(block.Id, blockPos + new Vector3Int(1, 0, 0));
+                RedrawIfId(block.Id, blockPos + new Vector3Int(1, 1, 0));
+                RedrawIfId(block.Id, blockPos + new Vector3Int(-1, 1, 0));
+                RedrawIfId(block.Id, blockPos + new Vector3Int(0, 1, 0));
             }
             else
             {
-                RedrawIfId(block.Id, chunkPos * Chunk.chunkSize + new Vector3Int(x, y, 0) + new Vector3Int(1, -1, 0));
-                RedrawIfId(block.Id, chunkPos * Chunk.chunkSize + new Vector3Int(x, y, 0) + new Vector3Int(1, 0, 0));
-                RedrawIfId(block.Id, chunkPos * Chunk.chunkSize + new Vector3Int(x, y, 0) + new Vector3Int(1, 1, 0));
+                RedrawIfId(block.Id, blockPos + new Vector3Int(1, -1, 0));
+                RedrawIfId(block.Id, blockPos + new Vector3Int(1, 0, 0));
+                RedrawIfId(block.Id, blockPos + new Vector3Int(1, 1, 0));
             }
         }
         else
         {
             if (y == 0)
             {
-                RedrawIfId(block.Id, chunkPos * Chunk.chunkSize + new Vector3Int(x, y, 0) + new Vector3Int(-1, -1, 0));
-                RedrawIfId(block.Id, chunkPos * Chunk.chunkSize + new Vector3Int(x, y, 0) + new Vector3Int(0, -1, 0));
-                RedrawIfId(block.Id, chunkPos * Chunk.chunkSize + new Vector3Int(x, y, 0) + new Vector3Int(1, -1, 0));
+                RedrawIfId(block.Id, blockPos + new Vector3Int(-1, -1, 0));
+                RedrawIfId(block.Id, blockPos + new Vector3Int(0, -1, 0));
+                RedrawIfId(block.Id, blockPos + new Vector3Int(1, -1, 0));
             }
             else if (y == Chunk.chunkSize - 1)
             {
-                RedrawIfId(block.Id, chunkPos * Chunk.chunkSize + new Vector3Int(x, y, 0) + new Vector3Int(-1, 1, 0));
-                RedrawIfId(block.Id, chunkPos * Chunk.chunkSize + new Vector3Int(x, y, 0) + new Vector3Int(0, 1, 0));
-                RedrawIfId(block.Id, chunkPos * Chunk.chunkSize + new Vector3Int(x, y, 0) + new Vector3Int(1, 1, 0));
+                RedrawIfId(block.Id, blockPos + new Vector3Int(-1, 1, 0));
+                RedrawIfId(block.Id, blockPos + new Vector3Int(0, 1, 0));
+                RedrawIfId(block.Id, blockPos + new Vector3Int(1, 1, 0));
             }
         }
     }

@@ -7,13 +7,15 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 09ffb918a9bcdc549aa4188246d9a8cb, type: 3}
   m_Name: 8Grass
   m_EditorClassIdentifier: 
   id: 8
   layer: 1
+  tags:
+  - replacable
   sprite:
   - {fileID: -1347532211411968617, guid: 790c49c84f335084b9d1012f0c5a2345, type: 3}
   - {fileID: -7645372005702169758, guid: 790c49c84f335084b9d1012f0c5a2345, type: 3}
@@ -26,3 +28,7 @@ MonoBehaviour:
   isEntityBlock: 1
   maxHealth: 0
   dropList: []
+  canPlaceOnBlocksWithTag: []
+  cannotPlaceOnBlocksWithTag: []
+  canReplaceBlockWithTag: []
+  cannotReplaceBlockWithTag: []

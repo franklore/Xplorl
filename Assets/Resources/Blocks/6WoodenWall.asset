@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09ffb918a9bcdc549aa4188246d9a8cb, type: 3}
+  m_Name: 6StoneWall
+  m_EditorClassIdentifier: 
+  id: 6
+  layer: 0
+  tags: []
+  sprite:
+  - {fileID: 3644867830214601293, guid: eb272263c71ae9e468939d8b75ec7999, type: 3}
+  - {fileID: 4007423936329004504, guid: eb272263c71ae9e468939d8b75ec7999, type: 3}
+  - {fileID: 3205947554750951262, guid: eb272263c71ae9e468939d8b75ec7999, type: 3}
+  - {fileID: -6299373777481230144, guid: eb272263c71ae9e468939d8b75ec7999, type: 3}
+  - {fileID: 329894538495015338, guid: eb272263c71ae9e468939d8b75ec7999, type: 3}
+  - {fileID: 8181818153270352352, guid: eb272263c71ae9e468939d8b75ec7999, type: 3}
+  - {fileID: 8175735508948743517, guid: eb272263c71ae9e468939d8b75ec7999, type: 3}
+  - {fileID: 5924759622699352954, guid: eb272263c71ae9e468939d8b75ec7999, type: 3}
+  - {fileID: 2250899380254686161, guid: eb272263c71ae9e468939d8b75ec7999, type: 3}
+  - {fileID: -5925965122315313113, guid: eb272263c71ae9e468939d8b75ec7999, type: 3}
+  - {fileID: -549063316513645936, guid: eb272263c71ae9e468939d8b75ec7999, type: 3}
+  - {fileID: 8642566800546161055, guid: eb272263c71ae9e468939d8b75ec7999, type: 3}
+  - {fileID: -4174089829461583182, guid: eb272263c71ae9e468939d8b75ec7999, type: 3}
+  - {fileID: -2653576796623951216, guid: eb272263c71ae9e468939d8b75ec7999, type: 3}
+  - {fileID: 293055370337447235, guid: eb272263c71ae9e468939d8b75ec7999, type: 3}
+  - {fileID: -6029029399364626799, guid: eb272263c71ae9e468939d8b75ec7999, type: 3}
+  spriteType: 6
+  randomOffset: 0
+  isCollider: 1
+  receiveDamage: 1
+  isEntityBlock: 1
+  maxHealth: 300
+  dropList: []
+  canPlaceOnBlocksWithTag:
+  - solid block
+  cannotPlaceOnBlocksWithTag: []
+  canReplaceBlockWithTag:
+  - replacable
+  cannotReplaceBlockWithTag: []
