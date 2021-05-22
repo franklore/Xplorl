@@ -7,12 +7,14 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 09ffb918a9bcdc549aa4188246d9a8cb, type: 3}
   m_Name: 5Dirt
   m_EditorClassIdentifier: 
   id: 5
+  layer: 0
+  tags: []
   sprite:
   - {fileID: 8641727722977497643, guid: 43f0ecc8adee54b4e91dbfc50e40708d, type: 3}
   - {fileID: -1278900557311105747, guid: 43f0ecc8adee54b4e91dbfc50e40708d, type: 3}
@@ -29,8 +31,14 @@ MonoBehaviour:
   - {fileID: 3489988067640147366, guid: 43f0ecc8adee54b4e91dbfc50e40708d, type: 3}
   - {fileID: 1018790119610574547, guid: 43f0ecc8adee54b4e91dbfc50e40708d, type: 3}
   - {fileID: -4685391132033899694, guid: 43f0ecc8adee54b4e91dbfc50e40708d, type: 3}
-  spriteType: 6
+  spriteType: 7
+  randomOffset: 0
   isCollider: 0
   receiveDamage: 0
+  isEntityBlock: 0
   maxHealth: 0
-  layer: 0
+  dropList: []
+  canPlaceOnBlocksWithTag: []
+  cannotPlaceOnBlocksWithTag: []
+  canReplaceBlockWithTag: []
+  cannotReplaceBlockWithTag: []

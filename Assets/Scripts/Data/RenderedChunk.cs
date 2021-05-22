@@ -64,15 +64,16 @@ public class RenderedChunk : MonoBehaviour
 
     public void DrawAndUpdateNeighbor(int x, int y, Block block)
     {
+        Vector3Int blockPos = Chunk.CombinePosition(ChunkPos, x, y);
         Draw(x, y, block);
-        Redraw(Chunk.CombinePosition(ChunkPos, x, y) + new Vector3Int(-1, -1, 0));
-        Redraw(Chunk.CombinePosition(ChunkPos, x, y) + new Vector3Int(-1, 0, 0));
-        Redraw(Chunk.CombinePosition(ChunkPos, x, y) + new Vector3Int(-1, 1, 0));
-        Redraw(Chunk.CombinePosition(ChunkPos, x, y) + new Vector3Int(0, -1, 0));
-        Redraw(Chunk.CombinePosition(ChunkPos, x, y) + new Vector3Int(0, 1, 0));
-        Redraw(Chunk.CombinePosition(ChunkPos, x, y) + new Vector3Int(1, -1, 0));
-        Redraw(Chunk.CombinePosition(ChunkPos, x, y) + new Vector3Int(1, 0, 0));
-        Redraw(Chunk.CombinePosition(ChunkPos, x, y) + new Vector3Int(1, 1, 0));
+        Redraw(blockPos + new Vector3Int(-1, -1, 0));
+        Redraw(blockPos + new Vector3Int(-1, 0, 0));
+        Redraw(blockPos + new Vector3Int(-1, 1, 0));
+        Redraw(blockPos + new Vector3Int(0, -1, 0));
+        Redraw(blockPos + new Vector3Int(0, 1, 0));
+        Redraw(blockPos + new Vector3Int(1, -1, 0));
+        Redraw(blockPos + new Vector3Int(1, 0, 0));
+        Redraw(blockPos + new Vector3Int(1, 1, 0));
     }
 
     public void DrawAndUpdateNeighborAcrossBlock(Vector3Int pos, Block block) {

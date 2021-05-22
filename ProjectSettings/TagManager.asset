@@ -16,7 +16,7 @@ TagManager:
   - 
   - 
   - NoCollision
-  - 
+  - ItemUI
   - 
   - 
   - 
@@ -54,4 +54,7 @@ TagManager:
     locked: 0
   - name: Fx
     uniqueID: 1837980607
+    locked: 0
+  - name: UI
+    uniqueID: 1215986433
     locked: 0

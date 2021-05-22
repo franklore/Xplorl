@@ -32,7 +32,7 @@ MonoBehaviour:
   - {fileID: 2845312742926433610, guid: 5c171b042fe6793498ff5871bf9326d6, type: 3}
   - {fileID: -8438048412923043348, guid: 5c171b042fe6793498ff5871bf9326d6, type: 3}
   - {fileID: 3162826104367349501, guid: 5c171b042fe6793498ff5871bf9326d6, type: 3}
-  spriteType: 6
+  spriteType: 7
   randomOffset: 0
   isCollider: 1
   receiveDamage: 0

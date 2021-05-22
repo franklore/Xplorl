@@ -13,7 +13,7 @@ public class Pack : MonoBehaviour
 
     public Item SelectedItem
     {
-        get => this[selectedItemIndex];  
+        get => this[selectedItemIndex];
     }
 
     public delegate void OnUpdatePack();
@@ -25,17 +25,18 @@ public class Pack : MonoBehaviour
         this.updatePack += updatePack;
     }
 
-    public Item this[int index] 
+    public Item this[int index]
     {
         get => items[index];
-        set 
-        { 
+        set
+        {
             items[index] = value;
             updatePack.Invoke();
         }
     }
 
-    public int SelectedItemIndex {
+    public int SelectedItemIndex
+    {
         get => selectedItemIndex;
         set
         {
@@ -53,7 +54,12 @@ public class Pack : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
+    }
+
+    public int AddItem(Item item)
+    {
+        return AddItem(item.id, item.count);
     }
 
     // return remain count;
@@ -86,6 +92,11 @@ public class Pack : MonoBehaviour
         return count;
     }
 
+    public bool ContainsItem(Item item)
+    {
+        return ContainsItem(item.id, item.count);
+    }
+
     public bool ContainsItem(int id, int count)
     {
         int total = 0;
@@ -102,6 +113,11 @@ public class Pack : MonoBehaviour
         }
         return false;
 
+    }
+
+    public bool ConsumeItem(Item item)
+    {
+        return ConsumeItem(item.id, item.count);
     }
 
     public bool ConsumeItem(int id, int count)
@@ -151,12 +167,79 @@ public class Pack : MonoBehaviour
 
     public void InitPack(Item[] items)
     {
-        this.items = new Item[items.Length];
+        this.items = new Item[packCapacity];
         for (int i = 0; i < items.Length; i++)
         {
             this.items[i] = items[i];
         }
         this.packCapacity = this.items.Length;
         updatePack.Invoke();
+    }
+
+    public bool Combine(int sourceIndex, int destIndex)
+    {
+        return Combine(sourceIndex, destIndex, this[sourceIndex].count);
+    }
+
+    public bool Combine(int sourceIndex, int destIndex, int count)
+    {
+        if (items[destIndex].IsEmpty())
+        {
+            items[destIndex].id = items[sourceIndex].id;
+        }
+        if (count > items[sourceIndex].count)
+
+        {
+            return false;
+        }
+        if (items[destIndex].id != items[sourceIndex].id)
+        {
+            if (items[sourceIndex].count == count)
+            {
+                Item temp = items[destIndex];
+                items[destIndex] = items[sourceIndex];
+                items[sourceIndex] = temp;
+                updatePack.Invoke();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        ItemObject io = ItemObjectFactory.Instance.GetItemObject(items[sourceIndex].id);
+        if (this[destIndex].count + count > io.maxCount)
+        {
+            int combined = io.maxCount - items[destIndex].count;
+            items[destIndex].count += combined;
+            items[sourceIndex].count -= combined;
+        }
+        else
+        {
+            items[destIndex].count += count;
+            items[sourceIndex].count -= count;
+        }
+        updatePack.Invoke();
+        return true;
+    }
+
+    public void ApplyRecipe(Recipe recipe)
+    {
+        for (int i = 0; i < recipe.Ingredients.Length; i++)
+        {
+            if (!ContainsItem(recipe.Ingredients[i]))
+            {
+                return;
+            }
+        }
+        for (int i = 0; i < recipe.Ingredients.Length; i++)
+        {
+            ConsumeItem(recipe.Ingredients[i]);
+        }
+        for (int i = 0; i < recipe.Products.Length; i++)
+        {
+            AddItem(recipe.Products[i]);
+        }
     }
 }

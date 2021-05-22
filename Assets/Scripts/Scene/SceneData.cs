@@ -17,7 +17,7 @@ public class SceneData : MonoBehaviour
 
     public GameSettings settings;
 
-    private void Start()
+    private void Awake()
     {
         if (instance == null)
         {
@@ -33,5 +33,10 @@ public class SceneData : MonoBehaviour
         {
             Directory.CreateDirectory(settings.mapRootDirectory);
         }
+    }
+
+    private void Start()
+    {
+
     }
 }

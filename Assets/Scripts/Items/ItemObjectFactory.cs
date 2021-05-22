@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "ItemObjectFactory", menuName = "Items/ItemObjectFactory")]
-public class ItemObjectFactory : ScriptableObject
+public class ItemObjectFactory : MonoBehaviour
 {
     private ItemObject[] indexedItemObjects;
 
@@ -19,7 +18,7 @@ public class ItemObjectFactory : ScriptableObject
 
     public GameObject DroppedItemTemplate;
 
-    private void OnEnable()
+    private void Awake()
     {
         object[] objects = Resources.LoadAll("Items");
 

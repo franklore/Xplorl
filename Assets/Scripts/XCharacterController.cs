@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
-
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
 public class XCharacterController : MonoBehaviour
 {
     public float MoveSpeed;
@@ -27,6 +28,7 @@ public class XCharacterController : MonoBehaviour
         anim = GetComponentInChildren<Animator>();
         rb = GetComponent<Rigidbody2D>();
         pack = GetComponent<Pack>();
+        Camera.main.transform.parent = transform;
     }
 
     private void FixedUpdate()
@@ -48,11 +50,6 @@ public class XCharacterController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            weapon.FireDown();
-        }
-
         if (Input.GetKeyDown(KeyCode.Q))
         {
             pack.AddItem(0, 100);
@@ -61,14 +58,38 @@ public class XCharacterController : MonoBehaviour
             pack.AddItem(7, 100);
         }
 
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (!EventSystem.current.IsPointerOverGameObject())
+            {
+                weapon.FireDown();
+            }
+        }
+
         if (Input.GetMouseButtonDown(1))
         {
-            PlaceBlock();
+            if (!EventSystem.current.IsPointerOverGameObject())
+            {
+                PlaceBlock();
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            if (PackUIController.Instance.Expanded)
+            {
+                PackUIController.Instance.Collapse();
+                RecipeListUIController.Instance.gameObject.SetActive(false);
+            }
+            else
+            {
+                PackUIController.Instance.Expand();
+                RecipeListUIController.Instance.gameObject.SetActive(true);
+                RecipeListUIController.Instance.UpdateUI(RecipeFactory.Instance.getRecipes());
+            }
         }
 
         SelectPackSlot();
     }
-
     private void PlaceBlock()
     {
         Vector3 mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);

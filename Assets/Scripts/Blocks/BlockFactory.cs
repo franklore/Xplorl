@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-[CreateAssetMenu(fileName = "BlockFactory", menuName = "Blocks/BlockFactory")]
-public class BlockFactory : ScriptableObject
+public class BlockFactory : MonoBehaviour
 {
     public int spriteSize = 16;
 
@@ -20,7 +19,7 @@ public class BlockFactory : ScriptableObject
         }
     }
 
-    private void OnEnable()
+    private void Awake()
     {
         object[] objects = Resources.LoadAll("Blocks");
 

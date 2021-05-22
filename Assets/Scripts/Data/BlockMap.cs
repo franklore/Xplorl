@@ -109,9 +109,9 @@ public class BlockMap : MonoBehaviour
 
         chunkCache = new LRUCache<Vector3Int, RenderedChunk>(chunkCapacity, true, renderedChunks);
         chunkCache.registerOnRemoveMethod(OnReleaseChunk);
-
         Load(SceneData.Instance.isNewMap);
     }
+   
 
     private void Update()
     {

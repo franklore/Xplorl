@@ -9,10 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 310f7fbc9f5658243a09f3bbe36de761, type: 3}
-  m_Name: 6Wood
+  m_Script: {fileID: 11500000, guid: aed09b30ce187a9478b726c88d3d5119, type: 3}
+  m_Name: 2
   m_EditorClassIdentifier: 
-  id: 6
-  maxCount: 100
-  sprite: {fileID: 21300000, guid: 660488dbd60967043a9090426a2ba3e4, type: 3}
-  placedBlockId: 6
+  Ingredients:
+  - id: 1
+    count: 20
+  Products:
+  - id: 0
+    count: 1

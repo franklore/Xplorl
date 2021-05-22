@@ -32,7 +32,7 @@ MonoBehaviour:
   - {fileID: 2796045738719408162, guid: c3d7dad3dff50a14da2446202fe358a1, type: 3}
   - {fileID: 3375157558910794197, guid: c3d7dad3dff50a14da2446202fe358a1, type: 3}
   - {fileID: 4695875867639115224, guid: c3d7dad3dff50a14da2446202fe358a1, type: 3}
-  spriteType: 6
+  spriteType: 7
   randomOffset: 0
   isCollider: 0
   receiveDamage: 0
@@ -41,3 +41,5 @@ MonoBehaviour:
   dropList: []
   canPlaceOnBlocksWithTag: []
   cannotPlaceOnBlocksWithTag: []
+  canReplaceBlockWithTag: []
+  cannotReplaceBlockWithTag: []
