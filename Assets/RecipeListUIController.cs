@@ -19,6 +19,7 @@ public class RecipeListUIController : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        gameObject.SetActive(false);
     }
     public void UpdateUI(Recipe[] recipes)
     {

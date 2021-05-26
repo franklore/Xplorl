@@ -6,26 +6,18 @@ using UnityEngine;
 [System.Serializable]
 public struct Item
 {
-    [SerializeField]
     public int id;
 
-    [SerializeField]
     public int count;
 
-    //Dictionary<string, object> properties;
+    public int entityId;
 
-    public Item(int id, int count)
+
+    public Item(int id, int count, int entityId)
     {
         this.id = id;
         this.count = count;
-    }
-
-    public static Item EmptyItem
-    {
-        get
-        {
-            return new Item(0, 0);
-        }
+        this.entityId = entityId;
     }
 
     public bool IsEmpty()

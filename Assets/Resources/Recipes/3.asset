@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Ingredients:
   - id: 1
-    count: 4
+    count: 2
   Products:
-  - id: 6
+  - id: 2
     count: 1

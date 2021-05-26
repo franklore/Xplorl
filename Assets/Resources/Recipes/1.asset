@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 1
   m_EditorClassIdentifier: 
   Ingredients:
-  - id: 6
+  - id: 2
     count: 1
   Products:
   - id: 1

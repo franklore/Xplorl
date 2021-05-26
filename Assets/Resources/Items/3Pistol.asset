@@ -9,10 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: caf7de35bc3196e43884bbbdc2093538, type: 3}
-  m_Name: 0Stone
+  m_Script: {fileID: 11500000, guid: 942743b3ca42e204fb7b92a67569cb5d, type: 3}
+  m_Name: 3Pistol
   m_EditorClassIdentifier: 
-  id: 0
-  maxCount: 100
-  sprite: {fileID: 21300000, guid: 8c8793b2eada713478c21de4629921f7, type: 3}
-  placedBlockId: 4
+  id: 3
+  maxCount: 1
+  sprite: {fileID: 21300000, guid: bede8b96321739e4c964df5d15986f17, type: 3}
+  EntityPrefab: {fileID: 7828098471574956843, guid: 5025d4c1f476fb443a703e8ca4c1a2f3,
+    type: 3}

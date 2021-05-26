@@ -38,10 +38,12 @@ public class ItemCollector : MonoBehaviour
         {
             if (Vector3.Distance(collider.transform.position, transform.position) <= collectRange)
             {
-                int remain = pack.AddItem(di.Item.id, di.Item.count);
+                int remain = pack.AddItem(di.Item);
                 if (remain > 0)
                 {
-                    di.Item = new Item(di.Item.id, di.Item.count - remain);
+                    Item item = di.Item;
+                    item.count -= remain;
+                    di.Item = item;
                 }
                 else
                 {

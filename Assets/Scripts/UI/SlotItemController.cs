@@ -16,7 +16,7 @@ public class SlotItemController : MonoBehaviour
         {
             image.sprite = ItemObjectFactory.Instance.GetItemObject(item.id).sprite;
             image.color = Color.white;
-            text.text = "" + item.count;
+            text.text = item.count >= 2 ? "" + item.count : "";
         }
         else
         {

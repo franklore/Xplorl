@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 7
   layer: 1
+  tags: []
   sprite:
   - {fileID: -6861365922197683907, guid: c19ae9633ef57e0469c5740100232cd5, type: 3}
   - {fileID: -4436173783040097349, guid: c19ae9633ef57e0469c5740100232cd5, type: 3}
@@ -26,13 +27,17 @@ MonoBehaviour:
   isEntityBlock: 1
   maxHealth: 500
   dropList:
-  - id: 6
+  - id: 2
     count: 1
-  - id: 6
+  - id: 2
     count: 1
-  - id: 6
+  - id: 2
     count: 1
-  - id: 6
+  - id: 2
     count: 1
-  - id: 6
+  - id: 2
     count: 1
+  canPlaceOnBlocksWithTag: []
+  cannotPlaceOnBlocksWithTag: []
+  canReplaceBlockWithTag: []
+  cannotReplaceBlockWithTag: []

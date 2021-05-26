@@ -11,5 +11,39 @@ public class ItemObject : ScriptableObject
 
     public Sprite sprite;
 
-    public int placedBlockId;
+    public virtual void SelectItem(ItemOperationInfo info)
+    {
+
+    }
+
+    public virtual void DeselectItem(ItemOperationInfo info)
+    {
+
+    }
+
+    public virtual void UseItemStart(ItemOperationInfo info)
+    {
+
+    }
+
+    public virtual void UseItemEnd(ItemOperationInfo info)
+    {
+
+    }
+
+    public virtual Item CreateItem(int count)
+    {
+        return new Item(id, count, -1);
+    }
+}
+
+public struct ItemOperationInfo
+{
+    public GameObject invoker;
+
+    public GameObject entity;
+
+    public Vector3 operationPosition;
+
+    public Item item;
 }

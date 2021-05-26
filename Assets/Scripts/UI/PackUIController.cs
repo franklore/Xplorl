@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using System;
 
 public class PackUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
@@ -14,17 +15,19 @@ public class PackUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
     private float slotWidth;
 
-    public GameObject SelectedBoxPrefab;
-
     private float selectBoxBorderWidth;
 
     public GameObject NumberSelectorPrefab;
+
+    public GameObject ItemBorderPrefab;
 
     public GameObject bottomSlots;
 
     public GameObject otherSlots;
 
     public RectTransform selectBoxRect;
+
+    public RectTransform itemInfoRect;
 
     private GameObject numberSelector;
 
@@ -61,6 +64,7 @@ public class PackUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         selectBoxBorderWidth = (selectBoxRect.sizeDelta.x - slotWidth) / 2;
         numberSelector = Instantiate(NumberSelectorPrefab, transform);
         numberSelector.SetActive(false);
+        itemInfoRect.gameObject.SetActive(false);
 
         slots = new GameObject[slotRowCount * 10];
         for (int row = 0; row < slotRowCount; row++)
@@ -92,6 +96,7 @@ public class PackUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
     private void Update()
     {
         PickedSlotItemFollowsPointer();
+        ItemInfoRectFollowsPointer();
     }
 
     public void Expand()
@@ -223,6 +228,14 @@ public class PackUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         }
     }
 
+    private void ItemInfoRectFollowsPointer()
+    {
+        Vector2 pointerPos;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(rt, Input.mousePosition, null, out pointerPos);
+        itemInfoRect.anchoredPosition = pointerPos - offset;
+        itemInfoRect.gameObject.SetActive(pickedSlotItem == null && ScreenPointInsidePack(pointerPos));
+    }
+
     private int ScreenPointToSlotIndex(Vector2 pos)
     {
         return Mathf.FloorToInt(pos.y / slotWidth) * 10 + Mathf.FloorToInt(pos.x / slotWidth) + 5;
@@ -239,4 +252,5 @@ public class PackUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             return pos.x >= -slotWidth * 5 && pos.y <= slotWidth * 5 && pos.y >= 0 && pos.y <= slotWidth;
         }
     }
+
 }

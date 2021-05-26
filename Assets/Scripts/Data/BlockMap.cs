@@ -13,6 +13,8 @@ public class BlockMap : MonoBehaviour
 
     private GridMap gridMap;
 
+    private EntityPropertyManager entityPropertyManager;
+
     public GameObject playerPrefab;
 
     private static int maxPlayer = 1;
@@ -189,6 +191,8 @@ public class BlockMap : MonoBehaviour
 
         mapLoaded = true;
         gridMap.Load(MapDir + "/blocks.dat", newMap);
+        entityPropertyManager = new EntityPropertyManager(MapDir + "/Entities.emp");
+        entityPropertyManager.Load();
         InitPlayer();
         DrawVisibleChunk(observerChunkPosition, false);
         DrawMinimap(observerChunkPosition);
@@ -199,7 +203,6 @@ public class BlockMap : MonoBehaviour
         player = Instantiate(playerPrefab);
         PackUIController.Instance.Player = player;
         XCharacterController xcc = player.GetComponent<XCharacterController>();
-        xcc.map = this;
         xcc.Load();
     }
 
@@ -207,6 +210,7 @@ public class BlockMap : MonoBehaviour
     {
         mapLoaded = false;
         gridMap.Save();
+        entityPropertyManager.Save();
         chunkCache.Clear();
         player.GetComponent<XCharacterController>().Save();
 
@@ -353,5 +357,25 @@ public class BlockMap : MonoBehaviour
         RenderedChunk rendered;
         chunkCache.TryGetValue(chunkPos, out rendered);
         return rendered;
+    }
+
+    public int CreateEntityProperty(object property)
+    {
+        return entityPropertyManager.Add(property);
+    }
+
+    public void RemoveEntityProperty(int entityId)
+    {
+        entityPropertyManager.Remove(entityId);
+    }
+
+    public object GetEntityProperty(int entityId)
+    {
+        return entityPropertyManager.properties[entityId];
+    }
+
+    public void SetEntityProperty(int entityId, object property)
+    {
+        entityPropertyManager.properties[entityId] = property;
     }
 }
