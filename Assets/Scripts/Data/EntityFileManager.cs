@@ -69,9 +69,9 @@ public class EntityPropertyManager
         }
         foreach (KeyValuePair<int, JObject> pair in properties)
         {
-            if (pair.Key > nextId)
+            if (pair.Key >= nextId)
             {
-                nextId = pair.Key;
+                nextId = pair.Key + 1;
             }
         }
     }

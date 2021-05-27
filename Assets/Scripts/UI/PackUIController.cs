@@ -29,6 +29,8 @@ public class PackUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
     public RectTransform itemInfoRect;
 
+    public Text itemInfoText;
+
     private GameObject numberSelector;
 
     private RectTransform rt;
@@ -230,10 +232,21 @@ public class PackUIController : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
     private void ItemInfoRectFollowsPointer()
     {
+
         Vector2 pointerPos;
         RectTransformUtility.ScreenPointToLocalPointInRectangle(rt, Input.mousePosition, null, out pointerPos);
-        itemInfoRect.anchoredPosition = pointerPos - offset;
-        itemInfoRect.gameObject.SetActive(pickedSlotItem == null && ScreenPointInsidePack(pointerPos));
+        if (pickedSlotItem == null && ScreenPointInsidePack(pointerPos))
+        {
+            itemInfoRect.anchoredPosition = pointerPos - offset;
+            itemInfoRect.gameObject.SetActive(true);
+            int index = ScreenPointToSlotIndex(pointerPos);
+            ItemObject io = ItemObjectFactory.Instance.GetItemObject(pack[index].id);
+            itemInfoText.text = io.getDescription(pack[index]);
+        }
+        else
+        {
+            itemInfoRect.gameObject.SetActive(false);
+        }
     }
 
     private int ScreenPointToSlotIndex(Vector2 pos)

@@ -28,4 +28,9 @@ public class EntityItemController : MonoBehaviour
     {
         return null;
     }
+
+    public virtual string GetDescription(Item item)
+    {
+        return "";
+    }
 }

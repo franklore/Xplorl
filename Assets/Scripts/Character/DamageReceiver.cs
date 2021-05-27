@@ -6,6 +6,14 @@ public class DamageReceiver : MonoBehaviour
 {
     public void ApplyDamage(Damage damage)
     {
-        SendMessage("OnReceiveDamage", damage);
+        if (enabled)
+        {
+            SendMessage("OnReceiveDamage", damage);
+        }
     }
+}
+
+public struct Armor
+{
+
 }

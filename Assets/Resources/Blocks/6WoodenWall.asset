@@ -39,6 +39,8 @@ MonoBehaviour:
   isEntityBlock: 1
   maxHealth: 300
   dropList: []
+  hitFx: {fileID: 9129043312633769094, guid: d7c81212764c6ad489c484f9ddee30da, type: 3}
+  hitSound: {fileID: 8300000, guid: 82ef6eaed5d940240a305b0266087f97, type: 3}
   canPlaceOnBlocksWithTag:
   - solid block
   cannotPlaceOnBlocksWithTag: []

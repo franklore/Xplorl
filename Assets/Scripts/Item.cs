@@ -24,4 +24,14 @@ public struct Item
     {
         return count == 0;
     }
+
+    public static bool operator== (Item i1, Item i2)
+    {
+        return i1.id == i2.id && i1.count == i2.count && i1.entityId == i2.entityId;
+    }
+
+    public static bool operator!= (Item i1, Item i2)
+    {
+        return !(i1 == i2);
+    }
 }

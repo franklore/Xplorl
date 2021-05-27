@@ -136,15 +136,8 @@ public class BlockMap : MonoBehaviour
         Block topBlock = null;
         if (mapLoaded)
         {
-            for (int i = layerTop - 1; i >= 0; i--)
-            {
-                topBlock = gridMap[new Vector3Int(position.x, position.y, i)];
-                if (topBlock != null && !topBlock.IsEmpty())
-                {
-                    break;
-                }
-            }
-            if (topBlock != null)
+            topBlock = GetTopBlock(position);
+            if (topBlock != null && !topBlock.IsEmpty())
             {
                 debug += "block: id = " + topBlock.Id + " state = " + topBlock.State + "\n";
                 debug += "properties int: " + topBlock.getPropertyAsInt(0) + " | " +
@@ -337,6 +330,21 @@ public class BlockMap : MonoBehaviour
         return gridMap[pos];
     }
 
+    public Block GetTopBlock(Vector3Int pos)
+    {
+        Vector3Int p = pos;
+        for (int i = layerTop; i >= layerBottom; i--)
+        {
+            p.z = i;
+            Block b = GetBlock(p);
+            if (b != null && !b.IsEmpty())
+            {
+                return b;
+            }
+        }
+        return null;
+    }
+
     public GameObject GetBlockGameObject(Vector3Int pos)
     {
         Vector3Int chunkPos, blockPos;
@@ -350,6 +358,21 @@ public class BlockMap : MonoBehaviour
         {
             return null;
         }
+    }
+
+    public GameObject GetTopBlockGameObject(Vector3Int pos)
+    {
+        Vector3Int p = pos;
+        for (int i = layerTop; i >= layerBottom; i--)
+        {
+            p.z = i;
+            GameObject b = GetBlockGameObject(p);
+            if (b != null)
+            {
+                return b;
+            }
+        }
+        return null;
     }
 
     public void SetBlock(Vector3Int pos, Block block)
@@ -384,7 +407,7 @@ public class BlockMap : MonoBehaviour
         entityPropertyManager.Remove(entityId);
     }
 
-    public object GetEntityProperty<T>(int entityId)
+    public T GetEntityProperty<T>(int entityId)
     {
         return entityPropertyManager.GetProperty<T>(entityId);
     }

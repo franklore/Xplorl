@@ -34,8 +34,15 @@ public class EntityItemObject : ItemObject
 
     public override void DeselectItem(ItemOperationInfo info)
     {
-        EntityItemController eic = info.entity.GetComponent<EntityItemController>();
-        eic.Deselect(info);
+        if (info.entity == null)
+        {
+            return;
+        }
+        EntityItemController eic;
+        if (info.entity.TryGetComponent(out eic))
+        {
+            eic.Deselect(info);
+        }
     }
 
     public override Item CreateItem(int count)
@@ -45,5 +52,11 @@ public class EntityItemObject : ItemObject
         int entityId = BlockMap.Instance.CreateEntityProperty(property);
 
         return new Item(id, count, entityId);
+    }
+
+    public override string getDescription(Item item)
+    {
+        EntityItemController eic = EntityPrefab.GetComponent<EntityItemController>();
+        return eic.GetDescription(item);
     }
 }

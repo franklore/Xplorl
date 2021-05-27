@@ -28,8 +28,10 @@ public class XCharacterController : MonoBehaviour
         anim = GetComponentInChildren<Animator>();
         rb = GetComponent<Rigidbody2D>();
         pack = GetComponent<Pack>();
+        pack.registerUpdateSelectedItem(onUpdatePackSelectedItem);
         Camera.main.transform.parent = transform;
     }
+
 
     private void FixedUpdate()
     {
@@ -110,7 +112,6 @@ public class XCharacterController : MonoBehaviour
 
     private void SelectPackSlot()
     {
-        int oldSelect = pack.SelectedItemIndex;
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             pack.SelectedItemIndex = 0;
@@ -151,20 +152,21 @@ public class XCharacterController : MonoBehaviour
         {
             pack.SelectedItemIndex = 9;
         }
+    }
 
-        if (pack.SelectedItemIndex != oldSelect)
-        {
-            ItemOperationInfo info;
-            info.invoker = gameObject;
-            info.operationPosition = Vector3.zero;
-            info.entity = entity;
-            info.item = pack.SelectedItem;
-            ItemObject io1 = ItemObjectFactory.Instance.GetItemObject(pack[oldSelect].id);
-            io1.DeselectItem(info);
-            
-            ItemObject io2 = ItemObjectFactory.Instance.GetItemObject(pack.SelectedItem.id);
-            io2.SelectItem(info);
-        }
+    public void onUpdatePackSelectedItem(int oldSelect)
+    {
+        Debug.Log("select " + pack.SelectedItemIndex + " replace " + oldSelect);
+        ItemOperationInfo info;
+        info.invoker = gameObject;
+        info.operationPosition = Vector3.zero;
+        info.entity = entity;
+        info.item = pack.SelectedItem;
+        ItemObject io1 = ItemObjectFactory.Instance.GetItemObject(pack[oldSelect].id);
+        io1.DeselectItem(info);
+
+        ItemObject io2 = ItemObjectFactory.Instance.GetItemObject(pack.SelectedItem.id);
+        io2.SelectItem(info);
     }
 
     public struct PlayerInfo

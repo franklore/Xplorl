@@ -9,6 +9,10 @@ public class BlockBehaviour : MonoBehaviour
 
     private Vector3Int localPosition;
 
+    private GameObject hitFx;
+
+    private AudioClip hitSound;
+
     public Vector3Int Position
     {
         get
@@ -67,6 +71,8 @@ public class BlockBehaviour : MonoBehaviour
         }
         co.enabled = bo.isCollider;
         dr.enabled = bo.receiveDamage;
+        hitFx = bo.hitFx;
+        hitSound = bo.hitSound;
     }
 
     public void Clear()
@@ -79,5 +85,9 @@ public class BlockBehaviour : MonoBehaviour
     {
         BlockObject bo = BlockFactory.Instance.GetBlockObject(block);
         bo.DamageBlock(this, damage);
+        Vector3 randomOffset = Random.insideUnitCircle;
+        Vector3 hitPoint = transform.position + randomOffset;
+        Instantiate(hitFx, hitPoint, Quaternion.identity);
+        AudioSource.PlayClipAtPoint(hitSound, hitPoint);
     }
 }

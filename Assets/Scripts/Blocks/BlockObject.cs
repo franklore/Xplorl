@@ -71,6 +71,10 @@ public class BlockObject : ScriptableObject
 
     public Item[] dropList;
 
+    public GameObject hitFx;
+
+    public AudioClip hitSound;
+
     public string[] canPlaceOnBlocksWithTag;
 
     public string[] cannotPlaceOnBlocksWithTag;

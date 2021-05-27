@@ -773,6 +773,7 @@ MonoBehaviour:
   otherSlots: {fileID: 334547676}
   selectBoxRect: {fileID: 1763782097}
   itemInfoRect: {fileID: 1188219578}
+  itemInfoText: {fileID: 1620773816}
   packCapacity: 0
   slotRowCount: 4
 --- !u!222 &1256342804
@@ -911,6 +912,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1620773816 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5776834380254003254, guid: b1de366e230c5304fa8bbdeb3ce1bbb3,
+    type: 3}
+  m_PrefabInstance: {fileID: 1749656670}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1625999569
 GameObject:
   m_ObjectHideFlags: 0

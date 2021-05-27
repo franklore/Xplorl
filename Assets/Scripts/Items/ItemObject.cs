@@ -35,6 +35,13 @@ public class ItemObject : ScriptableObject
     {
         return new Item(id, count, -1);
     }
+
+    public virtual string getDescription(Item item)
+    {
+        return "id: " + id + "\n" +
+            item.count + "/" + maxCount;
+
+    }
 }
 
 public struct ItemOperationInfo

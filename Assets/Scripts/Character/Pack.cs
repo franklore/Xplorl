@@ -16,13 +16,22 @@ public class Pack : MonoBehaviour
         get => this[selectedItemIndex];
     }
 
-    public delegate void OnUpdatePack();
+    public delegate void Action();
 
-    private event OnUpdatePack updatePack;
+    private event Action updatePack;
 
-    public void registerUpdateEvent(OnUpdatePack updatePack)
+    public delegate void ActionInt(int i);
+
+    private event ActionInt updateSelectedItem;
+
+    public void registerUpdateEvent(Action updatePack)
     {
         this.updatePack += updatePack;
+    }
+
+    public void registerUpdateSelectedItem(ActionInt updateSelectedItem)
+    {
+        this.updateSelectedItem += updateSelectedItem;
     }
 
     public Item this[int index]
@@ -31,7 +40,7 @@ public class Pack : MonoBehaviour
         set
         {
             items[index] = value;
-            updatePack.Invoke();
+            updatePack?.Invoke();
         }
     }
 
@@ -40,8 +49,13 @@ public class Pack : MonoBehaviour
         get => selectedItemIndex;
         set
         {
-            selectedItemIndex = value;
-            updatePack();
+            if (selectedItemIndex != value)
+            {
+                int old = selectedItemIndex;
+                selectedItemIndex = value;
+                updatePack?.Invoke();
+                updateSelectedItem?.Invoke(old);
+            }
         }
     }
 
@@ -59,7 +73,7 @@ public class Pack : MonoBehaviour
 
     public int AddItem(Item item)
     {
-
+        Item oldSelect = SelectedItem;
         ItemObject io = ItemObjectFactory.Instance.GetItemObject(item.id);
 
         int count = item.count;
@@ -93,7 +107,11 @@ public class Pack : MonoBehaviour
                 }
             }
         }
-        updatePack.Invoke();
+        updatePack?.Invoke();
+        if (SelectedItem != oldSelect)
+        {
+            updateSelectedItem?.Invoke(selectedItemIndex);
+        }
         return count;
     }
 
@@ -127,6 +145,7 @@ public class Pack : MonoBehaviour
 
     public bool ConsumeItem(int id, int count)
     {
+        Item oldSelect = SelectedItem;
         if (!ContainsItem(id, count))
         {
             return false;
@@ -139,7 +158,7 @@ public class Pack : MonoBehaviour
                 if (items[i].count > total)
                 {
                     items[i].count -= total;
-                    updatePack.Invoke();
+                    updatePack?.Invoke();
                     return true;
                 }
                 else
@@ -149,7 +168,11 @@ public class Pack : MonoBehaviour
                 }
             }
         }
-        updatePack.Invoke();
+        updatePack?.Invoke();
+        if (oldSelect != SelectedItem)
+        {
+            updateSelectedItem?.Invoke(selectedItemIndex);
+        }
         return true;
     }
 
@@ -157,8 +180,13 @@ public class Pack : MonoBehaviour
     {
         if (items[index].count >= count)
         {
+            Item oldSelect = SelectedItem;
             items[index].count -= count;
-            updatePack.Invoke();
+            updatePack?.Invoke();
+            if (oldSelect != SelectedItem)
+            {
+                updateSelectedItem?.Invoke(selectedItemIndex);
+            }
             return true;
         }
         return false;
@@ -166,12 +194,18 @@ public class Pack : MonoBehaviour
 
     public void Clear()
     {
+        Item oldSelect = SelectedItem;
         items = new Item[packCapacity];
-        updatePack.Invoke();
+        updatePack?.Invoke();
+        if (oldSelect != SelectedItem)
+        {
+            updateSelectedItem?.Invoke(selectedItemIndex);
+        }
     }
 
     public void InitPack(Item[] items)
     {
+        Item oldSelect = SelectedItem;
         this.items = new Item[packCapacity];
         for (int i = 0; i < items.Length; i++)
         {
@@ -179,6 +213,10 @@ public class Pack : MonoBehaviour
         }
         this.packCapacity = this.items.Length;
         updatePack.Invoke();
+        if (oldSelect != SelectedItem)
+        {
+            updateSelectedItem?.Invoke(selectedItemIndex);
+        }
     }
 
     public bool Combine(int sourceIndex, int destIndex)
@@ -188,6 +226,7 @@ public class Pack : MonoBehaviour
 
     public bool Combine(int sourceIndex, int destIndex, int count)
     {
+        Item oldSelect = SelectedItem;
         if (items[destIndex].IsEmpty())
         {
             items[destIndex].id = items[sourceIndex].id;
@@ -207,7 +246,11 @@ public class Pack : MonoBehaviour
                 Item temp = items[destIndex];
                 items[destIndex] = items[sourceIndex];
                 items[sourceIndex] = temp;
-                updatePack.Invoke();
+                updatePack?.Invoke();
+                if (oldSelect != SelectedItem)
+                {
+                    updateSelectedItem?.Invoke(selectedItemIndex);
+                }
                 return true;
             }
             else
@@ -227,7 +270,11 @@ public class Pack : MonoBehaviour
             items[destIndex].count += count;
             items[sourceIndex].count -= count;
         }
-        updatePack.Invoke();
+        updatePack?.Invoke();
+        if (oldSelect != SelectedItem)
+        {
+            updateSelectedItem?.Invoke(selectedItemIndex);
+        }
         return true;
     }
 

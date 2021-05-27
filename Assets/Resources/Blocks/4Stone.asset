@@ -29,6 +29,9 @@ MonoBehaviour:
   dropList:
   - id: 0
     count: 1
+    entityId: 0
+  hitFx: {fileID: 9129043312633769094, guid: d7c81212764c6ad489c484f9ddee30da, type: 3}
+  hitSound: {fileID: 8300000, guid: 29536eb6a0b57b04596917e9e6193bcb, type: 3}
   canPlaceOnBlocksWithTag:
   - solid block
   cannotPlaceOnBlocksWithTag: []

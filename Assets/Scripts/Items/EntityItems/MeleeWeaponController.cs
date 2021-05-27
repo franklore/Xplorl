@@ -67,7 +67,7 @@ public class MeleeWeaponController : EntityItemController
 
     public override void Select(ItemOperationInfo info)
     {
-        object property = BlockMap.Instance.GetEntityProperty<MeleeWeaponProperties>(info.item.entityId);
+        MeleeWeaponProperties property = BlockMap.Instance.GetEntityProperty<MeleeWeaponProperties>(info.item.entityId);
         SetProperty(property);
     }
 
@@ -85,7 +85,7 @@ public class MeleeWeaponController : EntityItemController
         attackRange = melee.attackRange;
     }
 
-    public object GetProperty()
+    public MeleeWeaponProperties GetProperty()
     {
         MeleeWeaponProperties properties = new MeleeWeaponProperties();
         properties.coolDown = cooldown;
@@ -101,7 +101,18 @@ public class MeleeWeaponController : EntityItemController
         properties.coolDown = Random.Range(0.35f, 0.45f);
         properties.repeat = true;
         properties.damage = 40;
+        properties.attackRange = 2;
         return properties;
+    }
+
+    public override string GetDescription(Item item)
+    {
+        MeleeWeaponProperties property = BlockMap.Instance.GetEntityProperty<MeleeWeaponProperties>(item.entityId);
+
+        return "Pickaxe\n" +
+            "damage " + property.damage + "\n" +
+            "speed " + 1 / property.coolDown + "\n" +
+            (property.repeat ? "auto fire\n" : "");
     }
 
     public virtual void Fire()
