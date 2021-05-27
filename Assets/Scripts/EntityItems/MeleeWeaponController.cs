@@ -24,7 +24,7 @@ public class MeleeWeaponController : EntityItemController
 
     public GameObject hitFx;
 
-    public override void FireDown()
+    public override void FireDown(ItemOperationInfo info)
     {
 
         if (repeat)
@@ -40,7 +40,7 @@ public class MeleeWeaponController : EntityItemController
         }
     }
 
-    public override void FireUp()
+    public override void FireUp(ItemOperationInfo info)
     {
         fireDown = false;
     }
@@ -53,6 +53,22 @@ public class MeleeWeaponController : EntityItemController
         public bool repeat;
 
         public float damage;
+    }
+
+    public override System.Type GetPropertyType()
+    {
+        return typeof(MeleeWeaponProperties);
+    }
+
+    public override void Select(ItemOperationInfo info)
+    {
+        object property = BlockMap.Instance.GetEntityProperty<MeleeWeaponProperties>(info.item.entityId);
+        SetProperty(property);
+    }
+
+    public override void Deselect(ItemOperationInfo info)
+    {
+        Destroy(gameObject);
     }
 
     public override void SetProperty(object property)

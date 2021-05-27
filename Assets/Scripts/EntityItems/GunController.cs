@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
 public class GunController : EntityItemController
@@ -33,12 +34,12 @@ public class GunController : EntityItemController
 
     }
 
-    public override void FireDown()
+    public override void FireDown(ItemOperationInfo info)
     {
         Instantiate(bullet, Muzzle.position, transform.rotation);
     }
 
-    public override void FireUp()
+    public override void FireUp(ItemOperationInfo info)
     {
         
     }
@@ -56,5 +57,20 @@ public class GunController : EntityItemController
     public override object CreateProperty()
     {
         return 0;
+    }
+
+    public override Type GetPropertyType()
+    {
+        return typeof(int);
+    }
+
+    public override void Select(ItemOperationInfo info)
+    {
+        
+    }
+
+    public override void Deselect(ItemOperationInfo info)
+    {
+        
     }
 }

@@ -369,13 +369,13 @@ public class BlockMap : MonoBehaviour
         entityPropertyManager.Remove(entityId);
     }
 
-    public object GetEntityProperty(int entityId)
+    public object GetEntityProperty<T>(int entityId)
     {
-        return entityPropertyManager.properties[entityId];
+        return entityPropertyManager.GetProperty<T>(entityId);
     }
 
-    public void SetEntityProperty(int entityId, object property)
-    {
-        entityPropertyManager.properties[entityId] = property;
-    }
+    //public void SetEntityProperty<T>(int entityId, object property)
+    //{
+    //    entityPropertyManager.properties[entityId] = property;
+    //}
 }

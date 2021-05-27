@@ -10,24 +10,23 @@ public class EntityItemObject : ItemObject
    
     public override void UseItemStart(ItemOperationInfo info)
     {
-        EntityItemController wc = info.entity.GetComponent<EntityItemController>();
-        wc.FireDown();
+        EntityItemController eic = info.entity.GetComponent<EntityItemController>();
+        eic.FireDown(info);
     }
 
     public override void UseItemEnd(ItemOperationInfo info)
     {
-        EntityItemController wc = info.entity.GetComponent<EntityItemController>();
-        wc.FireUp();
+        EntityItemController eic = info.entity.GetComponent<EntityItemController>();
+        eic.FireUp(info);
     }
 
     public override void SelectItem(ItemOperationInfo info)
     {
         GameObject entity = Instantiate(EntityPrefab);
         EntityItemController eic = entity.GetComponent<EntityItemController>();
-        object property = BlockMap.Instance.GetEntityProperty(info.item.entityId);
-        eic.SetProperty(property);
+        eic.Select(info);
         EntityHolder eh;
-        if(info.invoker.TryGetComponent(out eh))
+        if (info.invoker.TryGetComponent(out eh))
         {
             eh.Hold(entity);
         }
@@ -35,7 +34,8 @@ public class EntityItemObject : ItemObject
 
     public override void DeselectItem(ItemOperationInfo info)
     {
-        Destroy(info.entity);
+        EntityItemController eic = info.entity.GetComponent<EntityItemController>();
+        eic.Deselect(info);
     }
 
     public override Item CreateItem(int count)

@@ -3,10 +3,12 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 public class EntityPropertyManager
 {
-    public Dictionary<int, object> properties;
+    private Dictionary<int, JObject> properties;
 
     private string filePath;
 
@@ -19,7 +21,8 @@ public class EntityPropertyManager
 
     public int Add(object property)
     {
-        properties.Add(nextId, property);
+        JObject j = JObject.FromObject(property);
+        properties.Add(nextId, j);
         int r = nextId;
         nextId++;
         return r;
@@ -30,6 +33,26 @@ public class EntityPropertyManager
         properties.Remove(entityId);
     }
 
+    public T GetProperty<T>(int entityId)
+    {
+        JObject j = (JObject)properties[entityId];
+        return j.ToObject<T>();
+    }
+
+    [System.Serializable]
+    private struct KVPair
+    {
+        public int id;
+
+        public object property;
+
+        public KVPair(int id, object property)
+        {
+            this.id = id;
+            this.property = property;
+        }
+    }
+
     public void Load()
     {
         using (StreamReader reader = new StreamReader(new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.Read)))
@@ -37,15 +60,14 @@ public class EntityPropertyManager
             string json = reader.ReadToEnd();
             if (json == "")
             {
-                properties = new Dictionary<int, object>();
+                properties = new Dictionary<int, JObject>();
             }
             else
             {
-                properties = JsonUtility.FromJson<Dictionary<int, object>>(json);
-
+                properties = JsonConvert.DeserializeObject<Dictionary<int, JObject>>(json);
             }
         }
-        foreach (KeyValuePair<int, object> pair in properties)
+        foreach (KeyValuePair<int, JObject> pair in properties)
         {
             if (pair.Key > nextId)
             {
@@ -58,7 +80,9 @@ public class EntityPropertyManager
     {
         using (StreamWriter writer = new StreamWriter(new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.Write)))
         {
-            string json = JsonUtility.ToJson(properties);
+            
+            string json = JsonConvert.SerializeObject(properties);
+            Debug.Log(json);
             writer.Write(json);
         }
     }
