@@ -3,12 +3,20 @@ using UnityEngine;
 
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(SpriteRenderer))]
-[RequireComponent(typeof(Collider2D))]
 public class MeleeWeaponController : EntityItemController
 {
     private Animator anim;
 
-    public float cooldown;
+    private float _cooldown;
+
+    public float cooldown {
+        get => _cooldown;
+        set
+        {
+            _cooldown = value;
+            anim.speed = 1 / cooldown;
+        }
+    }
 
     private float timeAfterLastAttack;
 
@@ -16,11 +24,11 @@ public class MeleeWeaponController : EntityItemController
 
     public float damage;
 
+    public float attackRange;
+
     private bool fireDown;
 
     private SpriteRenderer sr;
-
-    private Collider2D co;
 
     public GameObject hitFx;
 
@@ -53,11 +61,8 @@ public class MeleeWeaponController : EntityItemController
         public bool repeat;
 
         public float damage;
-    }
 
-    public override System.Type GetPropertyType()
-    {
-        return typeof(MeleeWeaponProperties);
+        public float attackRange;
     }
 
     public override void Select(ItemOperationInfo info)
@@ -71,36 +76,37 @@ public class MeleeWeaponController : EntityItemController
         Destroy(gameObject);
     }
 
-    public override void SetProperty(object property)
+    public void SetProperty(object property)
     {
         MeleeWeaponProperties melee = (MeleeWeaponProperties)property;
         cooldown = melee.coolDown;
         repeat = melee.repeat;
         damage = melee.damage;
+        attackRange = melee.attackRange;
     }
 
-    public override object GetProperty()
+    public object GetProperty()
     {
         MeleeWeaponProperties properties = new MeleeWeaponProperties();
         properties.coolDown = cooldown;
         properties.repeat = repeat;
         properties.damage = damage;
+        properties.attackRange = attackRange;
         return properties;
     }
 
     public override object CreateProperty()
     {
         MeleeWeaponProperties properties = new MeleeWeaponProperties();
-        properties.coolDown = 0.4f;
+        properties.coolDown = Random.Range(0.35f, 0.45f);
         properties.repeat = true;
         properties.damage = 40;
         return properties;
     }
 
-    public void Fire()
+    public virtual void Fire()
     {
         sr.enabled = true;
-        co.enabled = true;
         Vector3 mouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector3 lookRotation = mouse - transform.position;
         float angle = Mathf.Atan2(lookRotation.y, lookRotation.x) * Mathf.Rad2Deg;
@@ -108,19 +114,19 @@ public class MeleeWeaponController : EntityItemController
         anim.SetFloat("facey", lookRotation.y);
         if (angle > -45 && angle <= 45)
         {
-            anim.Play("AttackRight");
+           anim.Play("AttackRight");
         }
         else if (angle > 45 && angle <= 135)
         {
-            anim.Play("AttackUp");
+           anim.Play("AttackUp");
         }
         else if (angle > 135 || angle <= -135)
         {
-            anim.Play("AttackLeft");
+           anim.Play("AttackLeft");
         }
         else
         {
-            anim.Play("AttackDown");
+           anim.Play("AttackDown");
         }
         timeAfterLastAttack = 0;
     }
@@ -128,9 +134,7 @@ public class MeleeWeaponController : EntityItemController
     private void Awake()
     {
         anim = GetComponent<Animator>();
-        anim.speed = 1 / cooldown;
         sr = GetComponent<SpriteRenderer>();
-        co = GetComponent<Collider2D>();
     }
 
     // Use this for initialization
@@ -158,20 +162,5 @@ public class MeleeWeaponController : EntityItemController
     {
         Debug.Log("animation end");
         sr.enabled = false;
-        co.enabled = false;
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        Debug.Log("Attack");
-        Damage damage;
-        damage.value = this.damage;
-        DamageReceiver dr;
-        if (collision.gameObject.TryGetComponent(out dr))
-        {
-            dr.ApplyDamage(damage);
-            Vector3 randomOffset = Random.insideUnitCircle;
-            Instantiate(hitFx, collision.transform.position + randomOffset, Quaternion.identity);
-        }
     }
 }

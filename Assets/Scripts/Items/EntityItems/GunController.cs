@@ -44,24 +44,9 @@ public class GunController : EntityItemController
         
     }
 
-    public override void SetProperty(object properties)
-    {
-
-    }
-
-    public override object GetProperty()
-    {
-        return 0;
-    }
-
     public override object CreateProperty()
     {
         return 0;
-    }
-
-    public override Type GetPropertyType()
-    {
-        return typeof(int);
     }
 
     public override void Select(ItemOperationInfo info)

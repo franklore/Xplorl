@@ -337,6 +337,21 @@ public class BlockMap : MonoBehaviour
         return gridMap[pos];
     }
 
+    public GameObject GetBlockGameObject(Vector3Int pos)
+    {
+        Vector3Int chunkPos, blockPos;
+        Chunk.SplitPosition(pos, out chunkPos, out blockPos);
+        RenderedChunk rendered;
+        if (chunkCache.TryGetValue(chunkPos, out rendered))
+        {
+            return rendered.GetBlockGameObject(blockPos);
+        }
+        else
+        {
+            return null;
+        }
+    }
+
     public void SetBlock(Vector3Int pos, Block block)
     {
         gridMap[pos] = block;

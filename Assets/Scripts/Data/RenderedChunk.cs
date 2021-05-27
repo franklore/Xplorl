@@ -152,6 +152,11 @@ public class RenderedChunk : MonoBehaviour
         }
     }
 
+    public GameObject GetBlockGameObject(Vector3Int blockPos)
+    {
+        return renderedBlocks[blockPos.x, blockPos.y];
+    }
+
 
     private void Redraw(Vector3Int pos)
     {

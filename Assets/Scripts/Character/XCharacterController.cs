@@ -157,7 +157,7 @@ public class XCharacterController : MonoBehaviour
             ItemOperationInfo info;
             info.invoker = gameObject;
             info.operationPosition = Vector3.zero;
-            info.entity = null;
+            info.entity = entity;
             info.item = pack.SelectedItem;
             ItemObject io1 = ItemObjectFactory.Instance.GetItemObject(pack[oldSelect].id);
             io1.DeselectItem(info);
