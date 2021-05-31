@@ -75,8 +75,8 @@ public class XCharacterController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.R))
         {
-            CostMap costs = Navigation.CreateCostMapFromBlockMap(new Vector3Int(0, 0, 0), new Vector3Int(8, 8, 0), 1);
-            Vector3Int[] path = Navigation.FindPath(new Vector3Int(0, 0, 0), new Vector3Int(8, 8, 0), costs);
+            CostMap costs = Navigation.CreateCostMapFromBlockMap(new Vector3Int(0, 0, 0), new Vector3Int(31, 31, 0), 1);
+            Vector3Int[] path = Navigation.FindPath(new Vector3Int(0, 0, 0), new Vector3Int(31, 31, 0), costs);
             for (int i = 0; i < path.Length; i++)
             {
                 GameObject go = BlockMap.Instance.GetBlockGameObject(path[i]);

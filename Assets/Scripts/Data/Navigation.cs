@@ -13,6 +13,8 @@ public class Navigation
 
         public float toCost;
 
+        public float cost { get => fromCost + toCost; }
+
         public Node parent;
 
         public Node(Vector3Int pos, float fromCost, float toCost, Node parent)
@@ -22,10 +24,16 @@ public class Navigation
             this.toCost = toCost;
             this.parent = parent;
         }
+
+        public override string ToString()
+        {
+            return "" + pos + fromCost + "+" + toCost + "=" + cost;
+        }
     }
 
     public static Vector3Int[] FindPath(Vector3Int from, Vector3Int to, CostMap costs)
     {
+        Profiler.BeginSample("FindPath");
         Dictionary<Vector3Int, Node> openList = new Dictionary<Vector3Int, Node>();
         HashSet<Vector3Int> closeList = new HashSet<Vector3Int>();
         Node cur = new Node(from, 0, cost(from, to), null);
@@ -33,15 +41,16 @@ public class Navigation
         int maxEpoch = 10000;
         for (int epoch = 0; epoch < maxEpoch; epoch++)
         {
-
+            //DrawImage(new List<Vector3Int>(openList.Keys).ToArray(), new List<Vector3Int>(closeList).ToArray(), costs, "./pathFinding/map" + epoch + ".png");
             if (openList.Count == 0)
             {
+                Profiler.EndSample();
                 return null;
             }
             Node bestNode = null;
             foreach (KeyValuePair<Vector3Int, Node> node in openList)
             {
-                if (bestNode == null || node.Value.fromCost + node.Value.toCost < bestNode.fromCost + bestNode.toCost)
+                if (bestNode == null || node.Value.cost < bestNode.cost || node.Value.cost == bestNode.cost && node.Value.toCost < bestNode.toCost)
                 {
                     bestNode = node.Value;
                 }
@@ -64,17 +73,52 @@ public class Navigation
                             cur = cur.parent;
                         }
                         path.Reverse();
+                        Profiler.EndSample();
                         return path.ToArray();
                     }
-                    if (!closeList.Contains(pos) && !openList.ContainsKey(pos) && canPass(pos, costs))
+                    if (!closeList.Contains(pos) && canPass(pos, costs))
                     {
-                        openList.Add(pos, new Node(pos, cur.fromCost + cost(Vector3Int.zero, new Vector3Int(x, y, 0)), cost(pos, to), cur));
+                        if (openList.ContainsKey(pos))
+                        {
+                            openList[pos].fromCost = Mathf.Min(cur.fromCost + cost(Vector3Int.zero, new Vector3Int(x, y, 0)), openList[pos].fromCost);
+                        }
+                        else
+                        {
+                            openList.Add(pos, new Node(pos, cur.fromCost + cost(Vector3Int.zero, new Vector3Int(x, y, 0)), cost(pos, to), cur));
+                        }
                     }
                 }
         }
-
-
+        Profiler.EndSample();
         return null;
+    }
+
+    public static void DrawImage(Vector3Int[] openList, Vector3Int[] closeList, CostMap costs, string path)
+    {
+        Texture2D texture = new Texture2D(costs.size.x, costs.size.y);
+        for (int x = costs.leftDownPos.x; x < costs.leftDownPos.x + costs.size.x; x++)
+            for (int y = costs.leftDownPos.y; y < costs.leftDownPos.y + costs.size.y; y++)
+            {
+                texture.SetPixel(x - costs.leftDownPos.x, y - costs.leftDownPos.y, costs[x, y] > 0.5f ? Color.black : Color.white);
+            }
+        for (int i = 0; i < openList.Length; i++)
+        {
+            texture.SetPixel(openList[i].x - costs.leftDownPos.x, openList[i].y - costs.leftDownPos.y, Color.blue);
+        }
+        for (int i = 0; i < closeList.Length; i++)
+        {
+            texture.SetPixel(closeList[i].x - costs.leftDownPos.x, closeList[i].y - costs.leftDownPos.y, Color.red);
+        }
+        Texture2D outTexture = new Texture2D(costs.size.x * 16, costs.size.y * 16);
+        for (int x = 0; x < costs.size.x * 16; x++)
+            for (int y = 0; y < costs.size.y * 16; y++)
+            {
+                outTexture.SetPixel(x, y, texture.GetPixel(x / 16, y / 16));
+            }
+        using (System.IO.BinaryWriter writer = new System.IO.BinaryWriter(new System.IO.FileStream(path, System.IO.FileMode.Create, System.IO.FileAccess.Write)))
+        {
+            writer.Write(outTexture.EncodeToPNG());
+        }
     }
 
     private static float cost(Vector3Int from, Vector3Int to)
@@ -128,7 +172,9 @@ public class CostMap
 {
     private float[,] costs;
 
-    private Vector3Int leftDownPos;
+    public Vector3Int leftDownPos { get; private set; }
+
+    public Vector3Int size { get; private set; }
 
     public float this[int x, int y]
     {
@@ -145,6 +191,7 @@ public class CostMap
     public CostMap(int width, int height, Vector3Int leftDownPos)
     {
         costs = new float[width, height];
+        size = new Vector3Int(width, height, 0);
         this.leftDownPos = leftDownPos;
     }
 }
