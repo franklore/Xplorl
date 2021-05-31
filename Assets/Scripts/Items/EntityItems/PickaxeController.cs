@@ -20,6 +20,9 @@ public class PickaxeController : MeleeWeaponController
                 {
                     Damage damage;
                     damage.value = this.damage;
+                    Vector3 randomOffset = Random.insideUnitCircle;
+                    Vector3 hitPoint = block.transform.position + randomOffset;
+                    damage.damagePoint = hitPoint;
                     dr.ApplyDamage(damage);
                 }
             }

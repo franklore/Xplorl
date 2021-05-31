@@ -83,11 +83,9 @@ public class BlockBehaviour : MonoBehaviour
 
     private void OnReceiveDamage(Damage damage)
     {
+        Instantiate(hitFx, damage.damagePoint, Quaternion.identity);
+        AudioSource.PlayClipAtPoint(hitSound, damage.damagePoint);
         BlockObject bo = BlockFactory.Instance.GetBlockObject(block);
         bo.DamageBlock(this, damage);
-        Vector3 randomOffset = Random.insideUnitCircle;
-        Vector3 hitPoint = transform.position + randomOffset;
-        Instantiate(hitFx, hitPoint, Quaternion.identity);
-        AudioSource.PlayClipAtPoint(hitSound, hitPoint);
     }
 }

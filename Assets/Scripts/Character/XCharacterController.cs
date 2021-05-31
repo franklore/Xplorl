@@ -26,7 +26,9 @@ public class XCharacterController : MonoBehaviour
     void Awake()
     {
         anim = GetComponentInChildren<Animator>();
+
         rb = GetComponent<Rigidbody2D>();
+
         pack = GetComponent<Pack>();
         pack.registerUpdateSelectedItem(onUpdatePackSelectedItem);
         Camera.main.transform.parent = transform;
@@ -68,6 +70,18 @@ public class XCharacterController : MonoBehaviour
             if (!EventSystem.current.IsPointerOverGameObject())
             {
                 UseItem(false);
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            CostMap costs = Navigation.CreateCostMapFromBlockMap(new Vector3Int(0, 0, 0), new Vector3Int(8, 8, 0), 1);
+            Vector3Int[] path = Navigation.FindPath(new Vector3Int(0, 0, 0), new Vector3Int(8, 8, 0), costs);
+            for (int i = 0; i < path.Length; i++)
+            {
+                GameObject go = BlockMap.Instance.GetBlockGameObject(path[i]);
+                SpriteRenderer sr = go.GetComponent<SpriteRenderer>();
+                sr.color = Color.blue;
             }
         }
 
